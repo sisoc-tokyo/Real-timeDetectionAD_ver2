@@ -1,0 +1,420 @@
+package logparse;
+
+import java.io.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.*;
+import java.util.*;
+
+import logparse.AuthLogUtil;
+import logparse.AuthLogUtil.Alert;
+
+/**
+ * Golden Ticket detection using Windows Event log 4674.
+ * 
+ * @version 1.0
+ * @author Mariko Fujimoto
+ */
+public class DetectPalser2008 {
+	// Initial value for timeCnt
+	private static short TIME_CNT = Short.MAX_VALUE;
+	
+	private static Map<String, LinkedHashSet<EventLogData>> log;
+	private static String outputDirName = null;
+
+	private static int EVENT_PROCESS = 4688;
+	private static int EVENT_PRIV_OPE = 4673;
+	private static int EVENT_SHARE = 5140;
+
+	private static String ACCOUNT_SYSTEM = "system";
+	private static String ACCOUNT_ANONYMOUS = "anonymous logon";
+	private static String PRIV = "setcbprivilege";
+	private static String PROCESS_NAME_1 = "rundll32.exe";
+	private static String PROCESS_NAME_2 = "cmd.exe";
+	private static String SHARE_NAME = "ipc$";
+
+	// account name for detection
+	private Set<String> accounts = new LinkedHashSet<String>();
+
+	private FileWriter filewriter = null;
+	private BufferedWriter bw = null;
+	private PrintWriter pw = null;
+	private short timeCnt = TIME_CNT;
+
+	// Data format
+	private static SimpleDateFormat sdf = new SimpleDateFormat(
+			"yyyy/MM/dd HH:mm:ss");
+
+	// private static boolean removeNoise = false;
+
+	private void readCSV(String filename) {
+
+		try {
+			File f = new File(filename);
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			String line;
+			int eventID = -1;
+			String date = "";
+			LinkedHashSet<EventLogData> evSet = null;
+			String accountName = "";
+			String clientAddress = "";
+			String serviceName = "";
+			String processName = "";
+			String shredName = "";
+			String objectName = "";
+			String privilege = "";
+			boolean isTargetEvent = false;
+			int limit = 0;
+
+			// categorize same operations based on time stamp
+
+			EventLogData ev = null;
+			Date baseDate = null;
+			Date logDate = null;
+			while ((line = br.readLine()) != null) {
+				int clientPort = 0;
+				// Remove tab
+				line = line.replaceAll("\\t", "");
+				String[] data = line.split(",", 0);
+				for (String elem : data) {
+					if (line.contains("Microsoft-Windows-Security-Auditing,")) {
+						date = data[1];
+						eventID = Integer.parseInt(data[3]);
+						if (line.contains(String.valueOf(EVENT_PRIV_OPE))
+								|| line.contains(String.valueOf(EVENT_PROCESS))
+								|| line.contains(String.valueOf(EVENT_SHARE))) {
+							isTargetEvent = true;
+							try {
+								// Get date
+								logDate = sdf.parse(date);
+								if (EVENT_PRIV_OPE == eventID 
+										//&& ACCOUNT_SYSTEM.equals(accountName) && SHARE_NAME.equals(shredName)
+										) {
+									baseDate = sdf.parse(date);
+									timeCnt--;
+									//System.out.println(timeCnt);
+								} else if (null != baseDate) {
+									long logTime = logDate.getTime();
+									long baseTime = baseDate.getTime();
+									long timeDiff = (baseTime - logTime) / 1000;
+									if (timeDiff > 2) {
+										timeCnt--;
+										baseDate = sdf.parse(date);
+									}
+								} 
+
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+						} else {
+							isTargetEvent = false;
+						}
+					} else if (isTargetEvent) {
+						if (elem.contains("セキュリティ ID:")
+								|| elem.contains("Security ID:")) {
+							accountName = parseElement(elem, ":", limit);
+							if (accountName.isEmpty()) {
+								continue;
+							} else {
+								accountName = accountName.split("@")[0]
+										.toLowerCase();
+								if (null == log.get(accountName)) {
+									evSet = new LinkedHashSet<EventLogData>();
+								} else {
+									evSet = log.get(accountName);
+								}
+
+								accounts.add(accountName);
+
+							}
+
+						} else if (elem.contains("サービス名:")
+								|| elem.contains("Service Name:")) {
+							serviceName = parseElement(elem, ":", limit);
+						} else if (elem.contains("クライアント アドレス:")
+								|| elem.contains("Client Address:")
+								|| elem.contains("ソース ネットワーク アドレス:")
+								|| elem.contains("Source Network Address:")
+								|| elem.contains("送信元アドレス:")
+								|| elem.contains("Source Address:")) {
+							elem = elem.replaceAll("::ffff:", "");
+							clientAddress = parseElement(elem, ":", limit);
+
+						} else if ((elem.contains("クライアント ポート:")
+								|| elem.contains("Client Port:")
+								|| elem.contains("ソース ポート:") || elem
+									.contains("Source Port:"))) {
+							try {
+								clientPort = Integer.parseInt(parseElement(
+										elem, ":", limit));
+							} catch (NumberFormatException e) {
+								// nothing
+							}
+							evSet.add(new EventLogData(date, clientAddress,
+									accountName, eventID, clientPort,
+									serviceName, processName, timeCnt));
+							if (EVENT_SHARE != eventID) {
+								log.put(accountName, evSet);
+							}
+						} else if (elem.contains("オブジェクト名:")
+								|| elem.contains("Object Name:")) {
+							objectName = parseElement(elem, ":", 2)
+									.toLowerCase();
+
+						} else if ((elem.contains("プロセス名:") || elem
+								.contains("Process Name:"))) {
+							processName = parseElement(elem, ":", 2)
+									.toLowerCase();
+
+							clientAddress = "";
+							ev = new EventLogData(date, clientAddress,
+									accountName, eventID, clientPort,
+									serviceName, processName, timeCnt);
+							ev.setObjectName(objectName);
+							if (eventID == EVENT_PROCESS) {
+								evSet.add(ev);
+								log.put(accountName, evSet);
+							}
+							processName = "";
+							objectName = "";
+							serviceName = "";
+						} else if (elem.contains("共有名:")
+								|| elem.contains("Share Name:")) {
+							//System.out.println(clientAddress);
+							ev = new EventLogData(date, clientAddress,
+									accountName, eventID, clientPort,
+									serviceName, processName, timeCnt);
+							shredName = parseElement(elem, ":", 2)
+									.toLowerCase();
+							ev.setSharedName(shredName);
+							evSet.add(ev);
+							log.put(accountName, evSet);
+							shredName = "";
+						} else if (eventID == EVENT_PRIV_OPE
+								&& (elem.contains("特権:") || elem
+										.contains("Privileges:"))) {
+							privilege = parseElement(elem, ":", 2)
+									.toLowerCase();
+							if (ev != null) {
+								ev.setPrivilege(privilege);
+							}
+							evSet.add(ev);
+							log.put(accountName, evSet);
+							privilege = "";
+						}
+					}
+				}
+			}
+			br.close();
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+
+	}
+
+	private String parseElement(String elem, String delimiter, int limit) {
+		String value = "";
+		try {
+			String elems[] = elem.trim().split(delimiter, limit);
+			if (elems.length >= 2) {
+				value = elems[1];
+				value = value.replaceAll("\t", "");
+			}
+		} catch (RuntimeException e) {
+			System.out.println(elem);
+			e.printStackTrace();
+		}
+		if (value.isEmpty()) {
+			value = "";
+		}
+		return value;
+	}
+
+	private void outputResults(Map map, String outputFileName) {
+		try {
+			// normal result
+			filewriter = new FileWriter(outputFileName, true);
+			bw = new BufferedWriter(filewriter);
+			pw = new PrintWriter(bw);
+			pw.println("eventID,account,computer,process,sharename,privilege,attack,time,date");
+			ArrayList<EventLogData> list = null;
+			
+			Map<String, LinkedHashSet> kerlog = new LinkedHashMap<String, LinkedHashSet>();
+			Map<Long, LinkedHashSet> timeBasedlog = new LinkedHashMap<Long, LinkedHashSet>();
+
+			for (String accountName : accounts) {
+				LinkedHashSet<EventLogData> evS = log.get(accountName);
+				if (null == evS) {
+					continue;
+				}
+
+				for (EventLogData ev : evS) {
+					if (null == ev) {
+						continue;
+					}
+					LinkedHashSet<EventLogData> evSet;
+					String clientAddress = ev.getClientAddress();
+					if (null != kerlog.get(clientAddress)) {
+						evSet = kerlog.get(clientAddress);
+					} else {
+						evSet = new LinkedHashSet<EventLogData>();
+					}
+					evSet.add(ev);
+					kerlog.put(ev.getClientAddress(), evSet);
+				}
+
+				for (Iterator it = kerlog.entrySet().iterator(); it.hasNext();) {
+					Map.Entry<String, LinkedHashSet> entry = (Map.Entry<String, LinkedHashSet>) it
+							.next();
+					String computer = entry.getKey();
+
+				}
+
+				list = new ArrayList<EventLogData>(evS);
+				Collections.reverse(list);
+				for (EventLogData ev : list) {
+					if (null == ev) {
+						continue;
+					}
+					LinkedHashSet<EventLogData> evSet;
+					if (null != timeBasedlog.get(ev.getTimeCnt())) {
+						evSet = timeBasedlog.get(ev.getTimeCnt());
+					} else {
+						evSet = new LinkedHashSet<EventLogData>();
+					}
+					evSet.add(ev);
+					timeBasedlog.put(ev.getTimeCnt(), evSet);
+				}
+			}
+			isOutlier(timeBasedlog);
+			outputLogs(timeBasedlog);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			pw.close();
+			try {
+				bw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void isOutlier(Map<Long, LinkedHashSet> timeBasedlog) {
+		for (Iterator it = timeBasedlog.entrySet().iterator(); it.hasNext();) {
+			Map.Entry<Long, LinkedHashSet> entry = (Map.Entry<Long, LinkedHashSet>) it
+					.next();
+			long key=(Long)entry.getKey();
+			//System.out.println(key);
+			LinkedHashSet<EventLogData> evS = (LinkedHashSet<EventLogData>) entry
+					.getValue();
+			boolean attackPriv=false;
+			boolean attackProcess=false;
+			boolean adminShare=false;
+			for (EventLogData ev : evS) {
+				if (ev.getEventID() == EVENT_PRIV_OPE && ev.getPrivilege().contains(PRIV)) {
+					if (ACCOUNT_SYSTEM.equals(ev.getAccountName())) {
+						attackPriv=true;
+						//System.out.println("attackPriv:"+ev.getTimeCnt());
+					}
+				} else if (ev.getEventID() == EVENT_PROCESS) {
+					if (ACCOUNT_SYSTEM.equals(ev.getAccountName())) {
+						if (ev.getProcessName().contains(PROCESS_NAME_1)
+								|| ev.getProcessName().contains(PROCESS_NAME_2)) {
+							attackProcess=true;
+							//System.out.println("attackProcess:"+ev.getTimeCnt());
+						}
+					}
+				} else if (5140 == ev.getEventID()) {
+					if (ACCOUNT_ANONYMOUS.equals(ev.getAccountName())
+							&& ev.getSharedName().contains(SHARE_NAME)) {
+						adminShare=true;
+						//System.out.println("adminShare:"+ev.getTimeCnt());
+					}
+				}
+			}
+			//System.out.println(attackPriv+","+attackProcess+","+adminShare+",");
+			if(attackPriv&&attackProcess&&adminShare){
+				System.out.println("attack!!");
+				for (EventLogData ev : evS) {
+					short isGolden = 1;
+					ev.setIsGolden(isGolden);
+				}
+			}
+		}
+
+	}
+
+	private void outputLogs(Map<Long, LinkedHashSet> kerlog) {
+		for (Iterator it = kerlog.entrySet().iterator(); it.hasNext();) {
+			Map.Entry<Long, LinkedHashSet> entry = (Map.Entry<Long, LinkedHashSet>) it
+					.next();
+			LinkedHashSet<EventLogData> evS = (LinkedHashSet<EventLogData>) entry
+					.getValue();
+			for (EventLogData ev : evS) {
+				int eventID = ev.getEventID();
+				if (eventID == EVENT_PRIV_OPE || eventID == EVENT_PROCESS
+						|| eventID == EVENT_SHARE) {
+					pw.println(ev.getEventID() + "," + ev.getAccountName() + "," 
+							+ ev.getClientAddress()+ "," 
+							+ ev.getProcessName() + "," + ev.getSharedName()
+							+ "," + ev.getPrivilege()
+							+ "," + ev.isGolden()+ "," + ev.getTimeCnt()+ "," + ev.getDate());
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Judge whether the log is outlier
+	 * 
+	 * @param inputDirname
+	 */
+	public void detectGolden(String inputDirname) {
+		File dir = new File(inputDirname);
+		File[] files = dir.listFiles();
+
+		for (File file : files) {
+			String filename = file.getName();
+			if (filename.endsWith(".csv")) {
+				readCSV(file.getAbsolutePath());
+			} else {
+				continue;
+			}
+		}
+		outputResults(log, this.outputDirName + "/" + "eventlog.csv");
+	}
+
+	private void detelePrevFiles(String outDirname) {
+		Path path = Paths.get(outDirname);
+		try (DirectoryStream<Path> ds = Files.newDirectoryStream(path, "*.*")) {
+			for (Path deleteFilePath : ds) {
+				Files.delete(deleteFilePath);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void printUseage() {
+		System.out.println("Useage");
+		System.out.println("{iputdirpath} {outputdirpath}");
+	}
+
+	public static void main(String args[]) throws ParseException {
+		DetectPalser2008 authLogParser = new DetectPalser2008();
+		String inputdirname = "";
+		if (args.length < 2) {
+			printUseage();
+		} else
+			inputdirname = args[0];
+		outputDirName = args[1];
+		log = new LinkedHashMap<String, LinkedHashSet<EventLogData>>();
+		authLogParser.detelePrevFiles(outputDirName);
+		authLogParser.detectGolden(inputdirname);
+	}
+
+}
