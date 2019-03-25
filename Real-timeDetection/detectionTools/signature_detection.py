@@ -62,7 +62,7 @@ class SignatureDetector:
         :return : True(1) if attack, False(0) if normal
         """
 
-        print(SignatureDetector.df)
+        #print(SignatureDetector.df)
 
         #SignatureDetector.df["accountname"] = SignatureDetector.df["accountname"].str.lower()
 
@@ -99,6 +99,7 @@ class SignatureDetector:
                                   & (SignatureDetector.df.eventid == SignatureDetector.EVENT_TGT)
         ]
         if len(logs)==0:
+            SignatureDetector.df.to_csv("df.csv")
             print("Signature D: " + SignatureDetector.RESULT_NOTGT)
             return SignatureDetector.RESULT_NOTGT
         else:
@@ -169,10 +170,14 @@ class SignatureDetector:
                     print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
                     return SignatureDetector.RESULT_ROMANCE
 
-            if (inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE)>=0 or inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE_2)>=0):
+        if (inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE)>=0 or inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE_2)>=0):
                 # account name ends with '$'
-                if (inputLog.get_accountname().endswith("$")):
-                    print("")
+            if (inputLog.get_accountname().endswith("$")):
+                logs = SignatureDetector.df[SignatureDetector.df.accountname.str.endswith("$")]
+                logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
+                                & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
+                print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                return SignatureDetector.RESULT_ROMANCE
 
 
         return SignatureDetector.RESULT_NORMAL
