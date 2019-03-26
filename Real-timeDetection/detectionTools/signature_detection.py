@@ -83,12 +83,14 @@ class SignatureDetector:
             result = SignatureDetector.isSuspiciousProcess(inputLog)
 
         elif (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
-            result = SignatureDetector.isSuspiciousProcess(inputLog)
             result = SignatureDetector.isEternalBlue(inputLog)
+            if (result== SignatureDetector.RESULT_NORMAL ):
+                result = SignatureDetector.isSuspiciousProcess(inputLog)
 
         elif (inputLog.get_eventid() == SignatureDetector.EVENT_SHARE):
-            result =SignatureDetector.isAdminshare(inputLog)
             result = SignatureDetector.isEternalRomace(inputLog)
+            if (result == SignatureDetector.RESULT_NORMAL):
+                result =SignatureDetector.isAdminshare(inputLog)
 
         series = pd.Series([inputLog.get_datetime(),inputLog.get_eventid(),inputLog.get_accountname(),inputLog.get_clientaddr(),
                       inputLog.get_servicename(),inputLog.get_processname(),inputLog.get_objectname(), inputLog.get_sharedname(), inputLog.get_securityid()], index=SignatureDetector.df.columns)
@@ -175,13 +177,13 @@ class SignatureDetector:
                 logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
                                 & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
 
-            if len(logs) > 0:
-                now=dateutil.parser.parse(inputLog.get_datetime())
-                last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
-                diff=(now-last_date).total_seconds()
-                if(diff<2):
-                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
+        if len(logs) > 0:
+            now=dateutil.parser.parse(inputLog.get_datetime())
+            last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
+            diff=(now-last_date).total_seconds()
+            if(diff<2):
+                print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                return SignatureDetector.RESULT_ROMANCE
 
         return SignatureDetector.RESULT_NORMAL
 
