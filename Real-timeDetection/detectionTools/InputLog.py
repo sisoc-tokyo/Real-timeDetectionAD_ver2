@@ -9,10 +9,11 @@ class InputLog:
     __processname=""
     __objectname=""
     __sharedname=""
+    __securityid=""
     __timecnt=0
     __isattack=False
 
-    def __init__(self, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname):
+    def __init__(self, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname, securityid):
         self.__datetime = datetime
         self.__eventid=eventid
         self.__accountname=accountname
@@ -21,6 +22,7 @@ class InputLog:
         self.__processname=processname
         self.__objectname=objectname
         self.__sharedname=sharedname
+        self.__securityid = securityid
 
         #print(self.__datetime+","+str(self.__eventid)+", "+self.__accountname+", "+self.__clientaddr+""+self.__servicename+""+self.__processname+""+self.__objectname)
 
@@ -53,3 +55,6 @@ class InputLog:
 
     def get_sharedname(self):
         return self.__sharedname
+
+    def get_securityid(self):
+        return self.__securityid

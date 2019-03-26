@@ -49,6 +49,7 @@ def preds():
     processname = request.form.get('processname',None)
     objectname = request.form.get('objectname',None)
     sharedname = request.form.get('sharedname',None)
+    securityid = request.form.get('securityid', None)
 
     datetime = datetime.strip("'")
     eventid = eventid.strip("'")
@@ -72,9 +73,12 @@ def preds():
     if sharedname != None:
         sharedname = sharedname.strip("'")
         sharedname = sharedname.lower()
+    if securityid != None:
+        securityid = securityid.strip("'")
+        securityid = securityid.lower()
 
     # To specify parameter as Object
-    inputLog = InputLog.InputLog(datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
+    inputLog = InputLog.InputLog(datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname, securityid)
     # update start by gam
     result = SignatureDetector.signature_detect(inputLog)
 
@@ -82,12 +86,12 @@ def preds():
     clientaddr = inputLog.get_clientaddr()
     processname=inputLog.get_processname()
 
-    print(inputLog.get_eventid()+","+inputLog.get_accountname()+","+inputLog.get_clientaddr()+","+inputLog.get_processname())
 
     if (result == SignatureDetector.RESULT_CMD or result == SignatureDetector.RESULT_MAL_CMD):
         result = ML.preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688)
     if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN):
-        print("send alert!!")
+        print(result)
+        print(inputLog.get_eventid() + "," + inputLog.get_accountname() + "," + inputLog.get_clientaddr() + "," + inputLog.get_processname()+ "," + inputLog.get_sharedname())
         #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
 
     return result

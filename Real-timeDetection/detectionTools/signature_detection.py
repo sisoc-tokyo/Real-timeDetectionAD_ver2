@@ -20,6 +20,9 @@ class SignatureDetector:
     ADMINSHARE="\c$"
     ADMINSHARE_2 = "admin$"
     IPC = "\ipc$"
+    SYSTEM="system"
+    ANONYMOUS="anonymous logon"
+    CMD="cmd.exe"
     RESULT_NORMAL="normal"
     RESULT_PRIV="attack: Unexpected privilege is used"
     RESULT_CMD="attack: command on blackList is used"
@@ -28,7 +31,7 @@ class SignatureDetector:
     RESULT_NOTGT="attack: Golden Ticket is used"
     RESULT_ROMANCE = "attack: Eternal Romance is used"
 
-    df=pd.DataFrame(data=None, index=None, columns=["datetime","eventid","accountname","clientaddr","servicename","processname","objectname","sharename"], dtype=None, copy=False)
+    df=pd.DataFrame(data=None, index=None, columns=["datetime","eventid","accountname","clientaddr","servicename","processname","objectname","sharename", "securityid"], dtype=None, copy=False)
     df_admin = pd.DataFrame(data=None, index=None, columns=[ "accountname"], dtype=None, copy=False)
     df_cmd = pd.DataFrame(data=None, index=None, columns=["processname"], dtype=None, copy=False)
 
@@ -40,7 +43,7 @@ class SignatureDetector:
         print("is_attack called")
 
     @staticmethod
-    def signature_detect(datetime, eventid, accountname, clientaddr, servicename, processname, objectname,sharedname):
+    def signature_detect(datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname, securityid):
         """ Detect attack using signature based detection.
         :param datetime: Datetime of the event
         :param eventid: EventID
@@ -52,7 +55,7 @@ class SignatureDetector:
         :return : True(1) if attack, False(0) if normal
         """
 
-        inputLog = InputLog.InputLog(datetime, eventid, accountname, clientaddr, servicename, processname, objectname,sharedname)
+        inputLog = InputLog.InputLog(datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname, securityid)
         return SignatureDetector.signature_detect(inputLog)
 
     @staticmethod
@@ -76,16 +79,19 @@ class SignatureDetector:
             result =SignatureDetector.isNotAdmin(inputLog)
 
         elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_OPE
-                or inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_SERVICE
-                or inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
+                or inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_SERVICE):
             result = SignatureDetector.isSuspiciousProcess(inputLog)
+
+        elif (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
+            result = SignatureDetector.isSuspiciousProcess(inputLog)
+            result = SignatureDetector.isEternalBlue(inputLog)
 
         elif (inputLog.get_eventid() == SignatureDetector.EVENT_SHARE):
             result =SignatureDetector.isAdminshare(inputLog)
             result = SignatureDetector.isEternalRomace(inputLog)
 
         series = pd.Series([inputLog.get_datetime(),inputLog.get_eventid(),inputLog.get_accountname(),inputLog.get_clientaddr(),
-                      inputLog.get_servicename(),inputLog.get_processname(),inputLog.get_objectname(), inputLog.get_sharedname()], index=SignatureDetector.df.columns)
+                      inputLog.get_servicename(),inputLog.get_processname(),inputLog.get_objectname(), inputLog.get_sharedname(), inputLog.get_securityid()], index=SignatureDetector.df.columns)
         SignatureDetector.df=SignatureDetector.df.append(series, ignore_index = True)
 
         return result
@@ -162,6 +168,13 @@ class SignatureDetector:
                         & ((SignatureDetector.df.sharename.str.endswith(SignatureDetector.ADMINSHARE)
                         |SignatureDetector.df.sharename.str.endswith(SignatureDetector.ADMINSHARE_2)))]
 
+        if (inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE)>=0 or inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE_2)>=0):
+                # account name ends with '$'
+            if (inputLog.get_accountname().endswith("$")):
+                logs = SignatureDetector.df[SignatureDetector.df.accountname.str.endswith("$")]
+                logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
+                                & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
+
             if len(logs) > 0:
                 now=dateutil.parser.parse(inputLog.get_datetime())
                 last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
@@ -170,15 +183,24 @@ class SignatureDetector:
                     print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
                     return SignatureDetector.RESULT_ROMANCE
 
-        if (inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE)>=0 or inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE_2)>=0):
-                # account name ends with '$'
-            if (inputLog.get_accountname().endswith("$")):
-                logs = SignatureDetector.df[SignatureDetector.df.accountname.str.endswith("$")]
-                logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
-                                & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
-                print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
-                return SignatureDetector.RESULT_ROMANCE
-
-
         return SignatureDetector.RESULT_NORMAL
 
+
+    @staticmethod
+    def isEternalBlue(inputLog):
+        time.sleep(1)
+        # security id is system and process name is cmd.exe
+        if (inputLog.get_securityid()==SignatureDetector.SYSTEM and inputLog.get_processname().endswith(SignatureDetector.CMD)):
+                # Check whether ANONYMOUS IPC access is used within 2 seconds
+            logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.ANONYMOUS)
+                        & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
+
+            if len(logs) > 0:
+                now=dateutil.parser.parse(inputLog.get_datetime())
+                last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
+                diff=(now-last_date).total_seconds()
+                if(diff<180):
+                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                    return SignatureDetector.RESULT_ROMANCE
+
+        return SignatureDetector.RESULT_NORMAL
