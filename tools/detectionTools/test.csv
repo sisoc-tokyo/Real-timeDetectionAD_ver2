@@ -1,0 +1,68 @@
+Level,Date and Time,Source,Event ID,Task Category
+Audit Success,3/16/2019 3:07:00 AM,Microsoft-Windows-Security-Auditing,5140,File Share,"A network share object was accessed.
+
+Subject:
+        Security ID:            SYSTEM
+        Account Name:           DC$
+        Account Domain:         EXAMPLE2
+        Logon ID:               0x3E7
+
+Network Information:   
+        Object Type:            File
+        Source Address:         192.168.2.22
+        Source Port:            45481
+
+Share Information:
+        Share Name:             \\*\C$
+        Share Path:             \??\C:\
+
+Access Request Information:
+        Access Mask:            0x1
+        Accesses:               ReadData (or ListDirectory)
+
+"
+Audit Success,3/16/2019 3:07:00 AM,Microsoft-Windows-Security-Auditing,5140,File Share,"A network share object was accessed.
+
+Subject:
+        Security ID:            SYSTEM
+        Account Name:           DC$
+        Account Domain:         EXAMPLE2
+        Logon ID:               0x3E7
+
+Network Information:
+        Object Type:            File
+        Source Address:         192.168.2.22
+        Source Port:            45481
+
+Share Information:
+        Share Name:             \\*\IPC$
+        Share Path:
+
+Access Request Information:
+        Access Mask:            0x1
+        Accesses:               ReadData (or ListDirectory)
+
+"
+Audit Success,3/16/2019 3:07:00 AM,Microsoft-Windows-Security-Auditing,5140,File Share,"A network share object was accessed.
+
+Subject:
+        Security ID:            ANONYMOUS LOGON
+        Account Name:           ANONYMOUS LOGON
+        Account Domain:         NT AUTHORITY
+        Logon ID:               0x20FBC
+
+Network Information:
+        Object Type:            File
+        Source Address:         192.168.2.22
+        Source Port:            45481
+
+Share Information:
+        Share Name:             \\*\IPC$
+        Share Path:
+
+Access Request Information:
+        Access Mask:            0x1
+        Accesses:               ReadData (or ListDirectory)
+
+"
+
