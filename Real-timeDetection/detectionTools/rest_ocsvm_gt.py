@@ -98,7 +98,7 @@ def preds():
 
 if __name__ == '__main__':
     try:
-        app.run(host='0.0.0.0')
+        app.run(host='0.0.0.0',threaded=True)
     finally:
         print('finally called')
         with open(log, mode='wb') as handle:

@@ -162,6 +162,7 @@ class SignatureDetector:
     @staticmethod
     def isEternalRomace(inputLog):
         time.sleep(1)
+        logs=None
         # share name is 'IPC' and account is computer account
         if (inputLog.get_sharedname().find(SignatureDetector.IPC)>=0 and inputLog.get_accountname().endswith("$")):
                 # Check whether admin share with computer account is used within 2 seconds
@@ -177,7 +178,7 @@ class SignatureDetector:
                 logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
                                 & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
 
-        if len(logs) > 0:
+        if ((logs is not None) and len(logs) > 0):
             now=dateutil.parser.parse(inputLog.get_datetime())
             last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
             diff=(now-last_date).total_seconds()
