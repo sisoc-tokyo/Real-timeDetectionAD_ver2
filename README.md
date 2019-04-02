@@ -1,15 +1,17 @@
-# Real-time detection tool of attacks leveraging Domain Administrator privilege
+# Real-time detection of high-risk attacks leveraging Kerberos and SMB
 
-This is a real-time detection tool for detecting attack against Active Directory leveraging Domain Administrator privileges using Domain Controller Event logs.
+This is a real-time detection tool for detecting attack against Active Directory.
+The tools is the improved version of  <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD" target="_blank">the previous version</a>.
 Our tool can useful for immediate incident response for targeted attacks.
 
-Our tool consists of the following steps to reduce false detection rate and support immediate incident response.
-* Step1 (Signature based detection): Analyze  logs using several signatures focusing on the characteristics of the attack activities.
-* Step2 (Machine Learning): Analyze logs with unsupervised machine learning in order to detect unusual command execution. 
-* Step3 (Real-time alert): Raise real-time alerts using Elastic Stack if attack activities are detected.
+The tool detects the following attack activities using Event logs and Kerberos/SMB packets. 
+* Attacks leveraging the vulnerability of MS17-010
+* Attacks using Golden Ticket
+* Attacks using Silver Ticket
 
 <img src="toolSummary.png" alt="Overview of the tool" title="Overview of the tool" width="50%" height="50%">
 
+The tool is tested in Windows 2008 R2, 2012, 2016. 
 <a href="Arsenal_eu-18-Real-time-Detection-of-Attacks-Leveraging-Domain-Administrator-Privilege.pdf" target="_blank">Documentation of the tool is here</a>
 
 ## Tool detail
