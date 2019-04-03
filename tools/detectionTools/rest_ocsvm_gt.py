@@ -10,7 +10,7 @@ import send_alert
 import pickle
 import os
 
-DOMAIN_NAME='example.com'
+DOMAIN_NAME='example2.local'
 log='logs.pickle'
 
 print('init called')

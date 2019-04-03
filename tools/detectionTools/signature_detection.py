@@ -30,6 +30,7 @@ class SignatureDetector:
     RESULT_ADMINSHARE = "attack: Admin share is used"
     RESULT_NOTGT="attack: Golden Ticket is used"
     RESULT_ROMANCE = "attack: Eternal Romance is used"
+    WARN = "warning:ST without TGT"
 
     df=pd.DataFrame(data=None, index=None, columns=["datetime","eventid","accountname","clientaddr","servicename","processname","objectname","sharename", "securityid"], dtype=None, copy=False)
     df_admin = pd.DataFrame(data=None, index=None, columns=[ "accountname"], dtype=None, copy=False)
@@ -108,8 +109,8 @@ class SignatureDetector:
         ]
         if len(logs)==0:
             SignatureDetector.df.to_csv("df.csv")
-            print("Signature D: " + SignatureDetector.RESULT_NOTGT)
-            return SignatureDetector.RESULT_NOTGT
+            print("Signature D: " + SignatureDetector.WARN)
+            return SignatureDetector.WARN
         else:
             return SignatureDetector.RESULT_NORMAL
 
