@@ -17,7 +17,7 @@ def detect_golden(ip_src):
     es = Elasticsearch('10.0.19.112:9200')
     s = Search(using=es, index=INDEX)
     s = s[0:1]
-    q = Q('match', indicator= WARN) & Q('match', event_id = EVENT_ST) & Q('match', event_data__IpAddress = ip_ptn)
+    q = Q('match', indicator__keyword= WARN) & Q('match', event_id = EVENT_ST) & Q('match', event_data__IpAddress__keyword = ip_ptn)
     s1 = s.query(q)
     response = s1.execute()
     id=''
