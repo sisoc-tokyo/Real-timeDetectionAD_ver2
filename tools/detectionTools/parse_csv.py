@@ -1,13 +1,28 @@
 import csv
+import os
 import sys
 from signature_detection import SignatureDetector
 import InputLog
 from machine_learning import ML
+from sklearn.externals import joblib
+import pandas as pd
 
+RESULT_FILE='result.csv'
 DOMAIN_NAME='example2.local'
+TARGET_EVT=[SignatureDetector.EVENT_TGT,SignatureDetector.EVENT_ST,SignatureDetector.EVENT_PRIV,SignatureDetector.EVENT_PROCESS,
+            SignatureDetector.EVENT_PRIV_SERVICE,SignatureDetector.EVENT_PRIV_OPE,SignatureDetector.EVENT_SHARE]
+
+clf_4674 = joblib.load('ocsvm_gt_4674.pkl')
+base_dummies_4674 = pd.read_csv('data_dummies_4674.csv')
+clf_4688 = joblib.load('ocsvm_gt_4688.pkl')
+base_dummies_4688 = pd.read_csv('data_dummies_4688.csv')
+
+SignatureDetector.df_admin = pd.read_csv("./admin.csv")
+SignatureDetector.df_cmd = pd.read_csv("./command.csv")
 
 def preds(row):
     #print(row)
+
     datetime = row[1]
     eventid = row[3]
     msg=row[5]
@@ -18,15 +33,43 @@ def preds(row):
     servicename = ""
     processname = ""
     objectname = ""
-    if (eventid==SignatureDetector.EVENT_SHARE):
+    securityid=""
+    if (eventid in TARGET_EVT):
         item_account = [s for s in item if 'Account Name' in s]
         org_accountname = item_account[0].split(":")[1]
 
+        item_clientaddr=""
         item_clientaddr = [s for s in item if 'Source Address' in s]
-        clientaddr = item_clientaddr[0].split(":")[1]
+        if len(item_clientaddr) == 0:
+            item_account = [s for s in item if 'Client Address' in s]
+        if len(item_clientaddr) == 0:
+            item_account = [s for s in item if 'Source Network Address' in s]
+        if(len(item_clientaddr)>=2):
+            clientaddr = item_clientaddr[0].split(":")[1]
 
-        item_sharedname = [s for s in item if 'Share Name' in s]
-        sharedname = item_sharedname[0].split(":")[1]
+        item_service=""
+        item_service = [s for s in item if 'Service Name' in s]
+        if(len(item_service)>=2):
+            servicename = item_service[0].split(":")[1]
+
+        item_process = ""
+        item_process = [s for s in item if 'Process Name' in s]
+        if (len(item_process) >= 2):
+            processname = item_process[0].split("New Process Name:")[1]
+
+        item_obj = ""
+        item_obj = [s for s in item if 'Object Name' in s]
+        if (len(item_obj) >= 2):
+            objectname = item_obj[0].split(":")[1]
+
+        item_id = ""
+        item_id = [s for s in item if 'Security ID' in s]
+        if (len(item_id) >= 2):
+            securityid = item_id[0].split(":")[1]
+
+        if (eventid==SignatureDetector.EVENT_SHARE):
+            item_sharedname = [s for s in item if 'Share Name' in s]
+            sharedname = item_sharedname[0].split(":")[1]
 
     else:
         return SignatureDetector.RESULT_NORMAL
@@ -55,7 +98,7 @@ def preds(row):
         sharedname = sharedname.lower()
 
     # To specify parameter as Object
-    inputLog = InputLog.InputLog(datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
+    inputLog = InputLog.InputLog(datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname,securityid)
     # update start by gam
     result = SignatureDetector.signature_detect(inputLog)
 
@@ -63,14 +106,16 @@ def preds(row):
     clientaddr = inputLog.get_clientaddr()
     processname=inputLog.get_processname()
 
-    #print(inputLog.get_eventid()+","+inputLog.get_accountname()+","+inputLog.get_clientaddr()+","+inputLog.get_processname())
-
     if (result == SignatureDetector.RESULT_CMD or result == SignatureDetector.RESULT_MAL_CMD):
         result = ML.preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688)
     if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN):
         print(datetime+ ',' +accountname + ',' + ',' + clientaddr + ',' + sharedname)
         print("send alert!!")
         #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
+
+    with open(RESULT_FILE, 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow([datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname,result])
 
     return result
 
@@ -85,5 +130,6 @@ def read_csv(file_name):
                 print(preds(row))
 
 if __name__ == '__main__':
-    print(sys.argv[1])
+    if(os.path.isfile(RESULT_FILE)):
+        os.remove(RESULT_FILE)
     read_csv(sys.argv[1])

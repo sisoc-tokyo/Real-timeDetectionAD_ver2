@@ -10,7 +10,7 @@ class ML:
     @staticmethod
     def preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688):
         # loading
-        response = jsonify()
+        response = ""
         new_data = []
         if accountname != None:
             accountname = accountname.lower()
@@ -48,11 +48,9 @@ class ML:
             result = clf_4674.predict(pred_data)
             if result == 1:
                 print('Signature B_command matched but it seems used in daily operations')
-                response.status_code = 201
                 response = ML.RESULT_WARN
             elif result == -1:
                 print('Signature B_command matched and it seems unusual behavior')
-                response.status_code = 202
                 response = SignatureDetector.RESULT_CMD
 
         if eventid == '4688':
@@ -62,11 +60,9 @@ class ML:
             result = clf_4688.predict(pred_data)
             if result == 1:
                 print('Signature B_command matched but it seems used in daily operations')
-                response.status_code = 201
                 response = ML.RESULT_WARN
             elif result == -1:
                 print('Signature B_command matched and it seems unusual behavior')
-                response.status_code = 202
                 response = SignatureDetector.RESULT_CMD
 
         # save
