@@ -25,7 +25,7 @@ Our method consists of the following functions.
 * Event Log analysis
 * Packet analysis
 
-Event Log analysis
+###	Event Log analysis
 1.	If someone access to the Domain Controller including attacks, activities are recorded in the Event log.
 2.	Each Event Log is sent to Logstash  in real-time by Winlogbeat.<br>
 Logstash extracts input data from the Event log, then call the detection API on Detection Server.
@@ -35,15 +35,15 @@ Logstash extracts input data from the Event log, then call the detection API on 
 Send alert E-mail to the security administrator, and add a flag indicates attack to the log .
 6.	Transfer the log to Elasticsearch . 
 
-###	Input of the tools: Event logs of the Domain Controller. 
-** 4672: An account assigned with special privileges logged on.
-** 4674: An operation was attempted on a privileged object
-** 4688: A new process was created
-** 4768: A Kerberos authentication ticket (TGT) was requested
-** 4769: A Kerberos service ticket was requested
-** 5140: A network share object was accessed
+####	Input of the tools: Event logs of the Domain Controller. 
+* 4672: An account assigned with special privileges logged on.
+* 4674: An operation was attempted on a privileged object
+* 4688: A new process was created
+* 4768: A Kerberos authentication ticket (TGT) was requested
+* 4769: A Kerberos service ticket was requested
+* 5140: A network share object was accessed
 
-Packet analysis
+###	Packet analysis
 1.	If someone access to the Domain Controller including attacks, Kerberos packets are sent to Domain Controller.
 2.	Tshark collects Kerberos packets.<br>
 Logstash extracts input data from the packets, then call the detection API on Detection Server.
@@ -51,6 +51,14 @@ Logstash extracts input data from the packets, then call the detection API on De
 4.	If attack is detected, judge the log is recorded by attack activities.<br>
 Send alert E-mail to the security administrator, and add a flag indicates attack to the packet .
 6.	Transfer the packet to Elasticsearch . 
+
+####	Input of the tools: Kerberos packets
+The following is the Kerberos message type used for detection.
+* 11: KRB_AS_REP
+* 12: KRB_TGS_REQ
+* 13: KRB_TGS_REP
+* 14: KRB_AP_REQ 
+* 32: KRB_AP_ERR_TKT_EXPIRED
 
 ###	Output (result) of the tool
 * Distinguish logs recorded by attack activities from logs recorded by normal operations, and identity infected computers and accounts. <br>
