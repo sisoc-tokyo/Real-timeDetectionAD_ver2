@@ -11,7 +11,7 @@ The tool detects the following attack activities using Event logs and Kerberos/S
 
 <img src="toolSummary.png" alt="Overview of the tool" title="Overview of the tool" width="50%" height="50%">
 
-The tool is tested in Windows 2008 R2, 2012, 2016. 
+The tool is tested in Windows 2008 R2, 2012 R2, 2016. 
 <a href="Arsenal_eu-18-Real-time-Detection-of-Attacks-Leveraging-Domain-Administrator-Privilege.pdf" target="_blank">Documentation of the tool is here</a>
 
 ## Tool detail
@@ -25,7 +25,7 @@ Our method consists of the following functions.
 * Event Log analysis
 * Packet analysis
 
-* Event Log analysis
+Event Log analysis
 1.	If someone access to the Domain Controller including attacks, activities are recorded in the Event log.
 2.	Each Event Log is sent to Logstash  in real-time by Winlogbeat.<br>
 Logstash extracts input data from the Event log, then call the detection API on Detection Server.
@@ -43,7 +43,7 @@ Send alert E-mail to the security administrator, and add a flag indicates attack
 ** 4769: A Kerberos service ticket was requested
 ** 5140: A network share object was accessed
 
-* Packet analysis
+Packet analysis
 1.	If someone access to the Domain Controller including attacks, Kerberos packets are sent to Domain Controller.
 2.	Tshark collects Kerberos packets.<br>
 Logstash extracts input data from the packets, then call the detection API on Detection Server.
