@@ -9,6 +9,8 @@ import pandas as pd
 
 RESULT_FILE='result.csv'
 DOMAIN_NAME='example2.local'
+MODE_ML='ml'
+MODE_WHITE='whitelist'
 TARGET_EVT=[SignatureDetector.EVENT_TGT,SignatureDetector.EVENT_ST,SignatureDetector.EVENT_PRIV,SignatureDetector.EVENT_PROCESS,
             SignatureDetector.EVENT_PRIV_SERVICE,SignatureDetector.EVENT_PRIV_OPE,SignatureDetector.EVENT_SHARE]
 
@@ -19,6 +21,9 @@ base_dummies_4688 = pd.read_csv('data_dummies_4688.csv')
 
 SignatureDetector.df_admin = pd.read_csv("./admin.csv")
 SignatureDetector.df_cmd = pd.read_csv("./command.csv")
+SignatureDetector.df_cmd_white = pd.read_csv("./whitelist.csv")
+
+mode=MODE_WHITE
 
 def preds(row):
     #print(row)
@@ -107,10 +112,14 @@ def preds(row):
     processname=inputLog.get_processname()
 
     if (result == SignatureDetector.RESULT_CMD or result == SignatureDetector.RESULT_MAL_CMD):
-        result = ML.preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688)
+        if(mode==MODE_ML):
+            result = ML.preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688)
+        else:
+            processname = processname.strip().strip("'")
+            result = SignatureDetector.check_cmd_whitelist(processname)
+
     if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN):
-        print(datetime+ ',' +accountname + ',' + ',' + clientaddr + ',' + sharedname)
-        print("send alert!!")
+        print("attack!!")
         #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
 
     with open(RESULT_FILE, 'a') as f:
@@ -132,4 +141,7 @@ def read_csv(file_name):
 if __name__ == '__main__':
     if(os.path.isfile(RESULT_FILE)):
         os.remove(RESULT_FILE)
+    if(len(sys.argv)>=3):
+        mode=sys.argv[2]
+
     read_csv(sys.argv[1])

@@ -35,6 +35,7 @@ class SignatureDetector:
     df=pd.DataFrame(data=None, index=None, columns=["datetime","eventid","accountname","clientaddr","servicename","processname","objectname","sharename", "securityid"], dtype=None, copy=False)
     df_admin = pd.DataFrame(data=None, index=None, columns=[ "accountname"], dtype=None, copy=False)
     df_cmd = pd.DataFrame(data=None, index=None, columns=["processname"], dtype=None, copy=False)
+    df_cmd_white = pd.DataFrame(data=None, index=None, columns=["processname"], dtype=None, copy=False)
 
 
     def __init__(self):
@@ -151,6 +152,15 @@ class SignatureDetector:
             return SignatureDetector.RESULT_CMD
 
         return SignatureDetector.RESULT_NORMAL
+
+    @staticmethod
+    def check_cmd_whitelist(processname):
+        logs = SignatureDetector.df_cmd_white[(SignatureDetector.df_cmd_white.processname == processname)]
+        if len(logs) == 0:
+            print("Signature B: " + SignatureDetector.RESULT_CMD)
+            return SignatureDetector.RESULT_CMD
+        else:
+            return SignatureDetector.RESULT_NORMAL
 
     @staticmethod
     def isAdminshare(inputLog):
