@@ -5,6 +5,7 @@ import urllib.parse
 from flask import Flask, jsonify, request
 from machine_learning import ML
 from signature_detection import SignatureDetector
+from identify_attack import identify_attack
 import InputLog
 import send_alert
 import pickle
@@ -89,12 +90,13 @@ def preds():
 
     if (result == SignatureDetector.RESULT_CMD or result == SignatureDetector.RESULT_MAL_CMD):
         result = ML.preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688)
-    if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN):
+    if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN and result !=SignatureDetector.WARN):
         print(result)
         print(inputLog.get_eventid() + "," + inputLog.get_accountname() + "," + inputLog.get_clientaddr() + "," + inputLog.get_processname()+ "," + inputLog.get_sharedname())
+        identify_attack.identify_attack(result,inputLog)
         #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
 
-    return result
+    return result,tactics
 
 if __name__ == '__main__':
     try:

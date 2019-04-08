@@ -24,6 +24,7 @@ Our tool consists of the following components:
 Our method consists of the following functions.
 * Event Log analysis
 * Packet analysis
+* Identification of tactics in ATT&CK
 
 ###	Event Log analysis
 1.	If someone access to the Domain Controller including attacks, activities are recorded in the Event log.

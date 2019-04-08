@@ -30,11 +30,12 @@ class SignatureDetector:
     RESULT_ADMINSHARE = "attack: Admin share is used"
     RESULT_NOTGT="attack: Golden Ticket is used"
     RESULT_ROMANCE = "attack: Eternal Romance is used"
+    RESULT_SILVER = "attack: Silver Ticket is used"
     WARN = "warning:ST without TGT"
 
     df=pd.DataFrame(data=None, index=None, columns=["datetime","eventid","accountname","clientaddr","servicename","processname","objectname","sharename", "securityid"], dtype=None, copy=False)
     df_admin = pd.DataFrame(data=None, index=None, columns=[ "accountname"], dtype=None, copy=False)
-    df_cmd = pd.DataFrame(data=None, index=None, columns=["processname"], dtype=None, copy=False)
+    df_cmd = pd.DataFrame(data=None, index=None, columns=["processname","tactics"], dtype=None, copy=False)
     df_cmd_white = pd.DataFrame(data=None, index=None, columns=["processname"], dtype=None, copy=False)
 
 
