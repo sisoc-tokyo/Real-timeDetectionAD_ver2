@@ -6,30 +6,34 @@ import detect_golden
 
 def checkticket(ip_src, cipher, msg_type, timestamp):
 
+    # Wait output to Elasticsearch
     time.sleep(3)
 
     es = Elasticsearch('10.0.19.112:9200')
     s = Search(using=es, index="cipher-*")
     s = s[0:10000]
 
+    # Check old cipher
     if msg_type == 12:
-        q = Q('match', layers__kerberos_msg_type=11) & Q('match', layers__ip_dst=ip_src) & Q('match', layers__kerberos_cipher__keyword=cipher)
-
+        q = (Q('match', layers__kerberos_msg_type= 11) | Q('match', layers__kerberos_msg_type= 13)) & Q('match', layers__ip_dst__keyword=ip_src) & Q('match', layers__kerberos_cipher__keyword=cipher)
     if msg_type == 14:
-        q = (Q('match', layers__kerberos_msg_type= 11) | Q('match', layers__kerberos_msg_type= 13)) & Q('match', layers__ip_dst = ip_src) & Q('match', layers__kerberos_cipher__keyword = cipher)
+        q =  Q('match', layers__kerberos_msg_type= 13) & Q('match', layers__ip_dst__keyword = ip_src) & Q('match', layers__kerberos_cipher__keyword = cipher)
     s1 = s.query(q)
     response = s1.execute()
     if len(response) != 0:
-        print('normal')
+        print('matched with old cipher at ' + str(timestamp) )
 
     else:
-        qtime = Q('range', timestamp={'gte': int(timestamp), 'lte': int(timestamp) + 1000}) & Q('match', layers__ip_dst = ip_src) & Q('match', layers__kerberos_error_code = 32)
+        # Check TKT Expire
+        qtime = Q('range', timestamp={'gte': int(timestamp), 'lte': int(timestamp) + 1000}) & Q('match', layers__ip_dst__keyword = ip_src) & Q('match', layers__kerberos_error_code = 32)
         s2 = s.query(qtime)
         response2 = s2.execute()
         if len(response2) != 0:
-            print('normal')
+            print('TKT Expired at ' + str(timestamp))
 
         else:
+            # Update packet-* index
+            time.sleep(5)
             s = Search(using=es, index="packet-*")
             s = s[0:10000]
             qsilver = Q('match', layers__kerberos_cipher__keyword=cipher)
@@ -40,14 +44,16 @@ def checkticket(ip_src, cipher, msg_type, timestamp):
                 id = h.meta.id
                 index = h.meta.index
                 if msg_type == 12:
-                    print('Golden ticket was used on ' + str(ip_src))
                     detect_golden.detect_golden(ip_src)
                     es.update(index=index, doc_type='doc', id=id,
                               body={'doc': {'indicator': 'attack: Golden Ticket is used'}})
                 if msg_type == 14:
                     es.update(index=index, doc_type='doc', id=id,
                               body={'doc': {'indicator': 'attack: Silver Ticket is used'}})
-                    print('Silver ticket was used on ' + str(ip_src))
+            if msg_type == 12:
+                print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(timestamp))
+            if msg_type == 14:
+                print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(timestamp))
 
 app = Flask(__name__)
 @app.route('/tsharkmsg', methods=['POST'])

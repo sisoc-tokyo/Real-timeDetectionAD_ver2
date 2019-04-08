@@ -12,7 +12,7 @@ The tool detects the following attack activities using Event logs and Kerberos/S
 <img src="toolSummary.png" alt="Overview of the tool" title="Overview of the tool" width="50%" height="50%">
 
 The tool is tested in Windows 2008 R2, 2012 R2, 2016. 
-<a href="Arsenal_eu-18-Real-time-Detection-of-Attacks-Leveraging-Domain-Administrator-Privilege.pdf" target="_blank">Documentation of the tool is here</a>
+<a href="Real-timeDetectionOfHigh-riskAttacksLeveragingKerberosAndSMB-wp.pdf" target="_blank">Documentation of the tool is here</a>
 
 ## Tool detail
 ###	Function of the tool
