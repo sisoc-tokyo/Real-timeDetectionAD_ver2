@@ -1,6 +1,7 @@
 import csv
 import os
 import sys
+import glob
 from signature_detection import SignatureDetector
 import InputLog
 from machine_learning import ML
@@ -128,15 +129,17 @@ def preds(row):
 
     return result
 
-def read_csv(file_name):
+def read_csv(inputdir):
 
-    with open(file_name, 'r') as f:
-        reader = csv.reader(f)
-        header = next(reader)
-
-        for row in reader:
-            if row:
-                print(preds(row))
+    files = glob.glob(inputdir+"/*.csv")
+    for file in files:
+        print(file)
+        with open(file, 'r') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            for row in reader:
+                if row:
+                    print(preds(row))
 
 if __name__ == '__main__':
     if(os.path.isfile(RESULT_FILE)):
