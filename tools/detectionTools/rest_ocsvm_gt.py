@@ -13,6 +13,9 @@ import os
 
 DOMAIN_NAME='example2.local'
 log='logs.pickle'
+MODE_ML='ml'
+MODE_WHITE='whitelist'
+mode=MODE_WHITE
 
 print('init called')
 if os.path.exists(log)==True:
@@ -29,6 +32,7 @@ base_dummies_4688 = pd.read_csv('data_dummies_4688.csv')
 
 SignatureDetector.df_admin = pd.read_csv("./admin.csv")
 SignatureDetector.df_cmd = pd.read_csv("./command.csv")
+SignatureDetector.df_cmd_white = pd.read_csv("./whitelist.csv")
 
 
 # If you run this code on the other computer, you might need to remove commentout below.
@@ -86,17 +90,22 @@ def preds():
     # update end
     clientaddr = inputLog.get_clientaddr()
     processname=inputLog.get_processname()
-
+    tactics=''
 
     if (result == SignatureDetector.RESULT_CMD or result == SignatureDetector.RESULT_MAL_CMD):
-        result = ML.preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688)
+        if(mode==MODE_ML):
+            result = ML.preds(eventid, accountname, processname, objectname, base_dummies_4674, clf_4674, base_dummies_4688, clf_4688)
+        else:
+            processname = processname.strip().strip("'")
+            result = SignatureDetector.check_cmd_whitelist(processname)
     if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN and result !=SignatureDetector.WARN):
         print(result)
         print(inputLog.get_eventid() + "," + inputLog.get_accountname() + "," + inputLog.get_clientaddr() + "," + inputLog.get_processname()+ "," + inputLog.get_sharedname())
-        identify_attack.identify_attack(result,inputLog)
+        tactics=identify_attack.identify_tactics(result,inputLog)
+        #print(tactics)
         #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
 
-    return result,tactics
+    return result+","+tactics
 
 if __name__ == '__main__':
     try:
