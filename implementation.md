@@ -1,36 +1,53 @@
-# Real-time detection tool of attacks leveraging Domain Administrator privilege
+# Real-time detection of high-risk attacks leveraging Kerberos and SMB
 
 ## How to implement the tool
 ###	Tool detail
-* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD/tree/master/detectionTools">Detection tools</a>
-    * Files
-        * rest_ocsvm_gt.py: REST API for detection. It is called by Logstash.
-        * signature_detection.py: Signature-based detection program. It is called by rest_ocsvm_gt.py.
-        * machine_learning.py: Machine learning detection program. It is called by rest_ocsvm_gt.py.
+* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/tree/master/tools/detectionTools">Detection tools</a>
+    * Files (programs)
+        * rest_ocsvm_gt.py: REST API for Event Log analysis. It is called by Logstash for Event Logs.
+        * signature_detection.py: Signature-based detection program using Event Logs. It is called by rest_ocsvm_gt.py.
+        * es_ticket_detection.py: REST API for packet analysis. It is called by Logstash for packet analysis.
+        * detect_golden.py: a program for re-analysing the result of Event Log analysis.
         * send_alert.py: Program for sending alert mail. It is called by rest_ocsvm_gt.py.
-        * ocsvm_gt_XXXX.pkl files: Model files. They are created by Goldenticket_One-class_SVM.ipynb
-        * data_dummies_XXXX.csv: One-Hot encoding dummy files. They are created by Goldenticket_One-class_SVM.ipynb
+        * machine_learning.py (optional): Machine learning detection program. It is called by rest_ocsvm_gt.py.
+    * Files (data)
+        * command.csv: A black list of commands which tend to be used for attacks
+        * admin.csv: A list of administrator account used in daily operations
+        * whitelist.csv  (optional): a white list of commands or tools used in daily operations
+        * ocsvm_gt_XXXX.pkl files  (optional): Model files for Machine learning. They are created by Goldenticket_One-class_SVM.ipynb
+        * data_dummies_XXXX.csv  (optional): One-Hot encoding dummy files for Machine learning. They are created by Goldenticket_One-class_SVM.ipynb
     * Location: Deploy on Detection Server
     * How to use: launch rest_ocsvm_gt.py 
     * Notes: REST API is running on Flask.
 
-* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD/tree/master/logstash">Configuration files for Logstash</a>
+* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/tree/master/tools/logstash">Configuration files for Logstash for Event Logs</a>
     * Files
-        * logstash_winlogbeat.conf: Configuration file of Logstash. Logs are sent through the pipline of Logstash. Logstash extract data for detection from logs and call the REST API "rest_ocsvm_gt.py".<br/>
-        This file should be located in Log Server where Logstash is running. 
-    * Location: Deploy on Log Server
+        * logstash_winlogbeat.conf: Configuration file of Logstash for Event Logs. Logs are sent through the pipline of Logstash. Logstash extract data for detection from logs and call the REST API "rest_ocsvm_gt.py".<br/>
+        This file should be located in Log Server for Event Logs where Logstash is running. 
+    * Location: Deploy on Log Server for Event Logs
     * How to use: 
         * Launch Logstash by specifing the conf file.<br/>
 	    e.g.）logstash -f /etc/logstash/conf.d/logstash_winlogbeat.conf &<br/>
 
-* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD/tree/master/winlogbeat">Configuration files for Winlogbeat</a>
+* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/tree/master/tools/logstash">Configuration files for Logstash for packets</a>
+    * Files
+        * tshark_ticket.conf: Configuration file of Logstash for packet analysis. Packets are sent through the pipline of Logstash. Logstash extract data for detection from logs and call the REST API "es_ticket_detection.py".<br/>
+        This file should be located in Log Server for packets where Logstash is running. 
+    * Location: Deploy on Log Server for packets
+    * How to use: 
+        * Launch Logstash by specifing the conf file.<br/>
+	    e.g.）logstash -f /etc/logstash/conf.d/tshark_ticket.conf &<br/>
+
+* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/tree/master/tools/winlogbeat">Configuration files for Winlogbeat</a>
     * Files
         * winlogbeat.yml: Configuration file of Winlogbeat. This file should be located in Domain Controller where Winlogbeat is running. 
     * Location: Place in the install directory of Winlogbeat on Domain Controller
     * How to use: 
 	    * Star Winlogbeat on Domain Controller
  
-* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD/tree/master/learningTools">Learning tools</a>
+* <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/tree/master/tools/learningTools">Machine learning tools (optional)</a>
+Optionally, “Machine learning” can be used to reduce false positives through re-analyzing the signature-based detection. 
+If the operational environment is stable, whitelists can be used instead of machine learning.
     * Files
         * ADLogParserForML: Java programs to prepare for creating input for Goldenticket_One-class_SVM.ipynb. This programs extract data from Event Logs exported as CSV files.<br/>
         We tested this program on Java 1.8 .

@@ -71,11 +71,15 @@ We tested our tool in the following environment.
 
 * Domain Controller (Windows 2008R2/ 2012 R2/ 2016)
     * Winlogbeat(5.4.2): Open-source log analysis platform
-* Log Server: Open-source tools + Logstash pipeline
-     * OS: CentOS 7
+* Log Server for Event Logs: Open-source tools + Logstash pipeline
+    * OS: CentOS 7
     * Logstash(6.5.0): Parse logs, launch the detection program, transfer logs to Elastic Search
     * Elastic Search(6.5.0): Collects logs and provides API interface for log detection
     * Kibana(6.5.0): Visualizes the detection results
+* Log Server for packet analysis: Open-source tools + Logstash pipeline
+    * OS: CentOS 7
+    * Logstash(6.5.0): Parse logs, launch the detection program, transfer logs to Elastic Search
+    * tshark: Collect and save packets
 * Detection Server: Custom detection programs
      * OS: CentOS 7
      * Python: 3.6.0
