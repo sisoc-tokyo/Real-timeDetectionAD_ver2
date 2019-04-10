@@ -10,8 +10,14 @@ import InputLog
 import send_alert
 import pickle
 import os
+import dateutil.parser
+import time
 
+# Change the following parameters
 DOMAIN_NAME='example2.local'
+TIME_ZONE='Asia/Tokyo'
+#################################
+
 log='logs.pickle'
 MODE_ML='ml'
 MODE_WHITE='whitelist'
@@ -33,7 +39,6 @@ base_dummies_4688 = pd.read_csv('data_dummies_4688.csv')
 SignatureDetector.df_admin = pd.read_csv("./admin.csv")
 SignatureDetector.df_cmd = pd.read_csv("./command.csv")
 SignatureDetector.df_cmd_white = pd.read_csv("./whitelist.csv")
-
 
 # If you run this code on the other computer, you might need to remove commentout below.
 # Sometimes mode.predict function does not load correctly.
@@ -106,6 +111,22 @@ def preds():
         #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
 
     return result+","+tactics
+
+@app.route('/history', methods=['DELETE'])
+def history():
+    from datetime import datetime
+    from pytz import timezone
+    now = datetime.now(timezone(TIME_ZONE))
+    for index, row in SignatureDetector.df.iterrows():
+        date = row['datetime']
+        datetime = dateutil.parser.parse(date)
+        #print(date)
+        #utc_datetime = timezone(TIME_ZONE).localize(datetime)
+        diff = (now - datetime).total_seconds()
+        if (diff > 36000):
+            print("Expired: " + date)
+            SignatureDetector.df = SignatureDetector.df.drop(index)
+    return ""
 
 if __name__ == '__main__':
     try:
