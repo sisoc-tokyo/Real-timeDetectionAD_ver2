@@ -110,7 +110,6 @@ class SignatureDetector:
                                   & (SignatureDetector.df.eventid == SignatureDetector.EVENT_TGT)
         ]
         if len(logs)==0:
-            SignatureDetector.df.to_csv("df.csv")
             print("Signature D: " + SignatureDetector.WARN)
             return SignatureDetector.WARN
         else:

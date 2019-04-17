@@ -26,9 +26,9 @@ class identify_attack:
         elif (result == SignatureDetector.RESULT_CMD):
             cmds = inputLog.get_processname().split("\\")
             cmd = cmds[len(cmds) - 1]
-            cmd = cmds[len(cmds) - 1]
             log = SignatureDetector.df_cmd[(SignatureDetector.df_cmd.processname == cmd)].tail()
-            tactics=log["tactics"].iat[0]
-            return tactics
+            if len(log) > 0:
+                tactics=log["tactics"].iat[0]
+                return tactics
 
         return ""
