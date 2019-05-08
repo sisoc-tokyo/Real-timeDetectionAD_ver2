@@ -9,19 +9,19 @@ class identify_attack:
     @staticmethod
     def identify_tactics(result, inputLog):
         if(result==SignatureDetector.RESULT_PRIV):
-            return TACTICS["TA0004"]
+            return identify_attack.TACTICS["TA0004"]
 
         elif(result==SignatureDetector.RESULT_ADMINSHARE):
-            return TACTICS["TA0009"]
+            return identify_attack.TACTICS["TA0009"]
 
         elif (result == SignatureDetector.RESULT_ROMANCE):
-            return TACTICS["TA0008"]
+            return identify_attack.TACTICS["TA0008"]
 
         elif (result == SignatureDetector.RESULT_NOTGT):
-            return TACTICS["TA0003"]
+            return identify_attack.TACTICS["TA0003"]
 
         elif (result == SignatureDetector.RESULT_SILVER):
-            return TACTICS["TA0003"]
+            return identify_attack.TACTICS["TA0003"]
 
         elif (result == SignatureDetector.RESULT_CMD):
             cmds = inputLog.get_processname().split("\\")
