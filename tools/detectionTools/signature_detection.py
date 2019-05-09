@@ -7,12 +7,14 @@ import time
 
 class SignatureDetector:
 
+    EVENT_LOGIN="4624"
     EVENT_TGT = "4768"
     EVENT_ST="4769"
     EVENT_PRIV = "4672"
     EVENT_PROCESS = "4688"
     EVENT_PRIV_SERVICE = "4673"
     EVENT_PRIV_OPE = "4674"
+    EVENT_NTLM = "4776"
     EVENT_SHARE = "5140"
     SYSTEM_DIR = "c:\windows";
     SYSTEM_DIR2 = "c:\program files";
@@ -92,8 +94,16 @@ class SignatureDetector:
 
         elif (inputLog.get_eventid() == SignatureDetector.EVENT_SHARE):
             result = SignatureDetector.isEternalRomace(inputLog)
+            result = SignatureDetector.isEternalWin8(inputLog)
             if (result == SignatureDetector.RESULT_NORMAL):
                 result =SignatureDetector.isAdminshare(inputLog)
+
+        elif (inputLog.get_eventid() == SignatureDetector.EVENT_LOGIN):
+            result = SignatureDetector.isEternalWin8(inputLog)
+
+
+        elif (inputLog.get_eventid() == SignatureDetector.EVENT_NTLM):
+            result = SignatureDetector.isEternalWin8(inputLog)
 
         series = pd.Series([inputLog.get_datetime(),inputLog.get_eventid(),inputLog.get_accountname(),inputLog.get_clientaddr(),
                       inputLog.get_servicename(),inputLog.get_processname(),inputLog.get_objectname(), inputLog.get_sharedname(), inputLog.get_securityid()], index=SignatureDetector.df.columns)
@@ -196,6 +206,76 @@ class SignatureDetector:
             if(diff<2):
                 print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
                 return SignatureDetector.RESULT_ROMANCE
+
+        return SignatureDetector.RESULT_NORMAL
+
+    @staticmethod
+    def isEternalWin8(inputLog):
+        time.sleep(1)
+        logs = None
+        logs_login = None
+        logs_ntlm = None
+        logs_share = None
+
+        # share name is 'IPC'
+        if (inputLog.get_sharedname().find(SignatureDetector.IPC) >= 0 ):
+            # Check whether 4624 and 4776 events are recorded from the same account within 2 seconds
+            logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
+            if ((logs is not None) and len(logs) > 0):
+                logs_login = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_LOGIN)]
+                logs_ntlm = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_NTLM)]
+
+            if ((logs_login is not None) and len(logs_login) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
+                now = dateutil.parser.parse(inputLog.get_datetime())
+                last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
+                diff_login = (now - last_date).total_seconds()
+
+                last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
+                diff_ntlm = (now - last_date).total_seconds()
+
+                if (diff_login < 2 and diff_ntlm < 2):
+                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                    return SignatureDetector.RESULT_ROMANCE
+
+        # 4624
+        if (inputLog.get_eventid()==SignatureDetector.EVENT_LOGIN):
+            # Check whether 5140 and 4776 events are recorded from the same account within 2 seconds
+            logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
+            if ((logs is not None) and len(logs) > 0):
+                logs_share = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_SHARE)]
+                logs_ntlm = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_NTLM)]
+
+            if ((logs_share is not None) and len(logs_share) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
+                now = dateutil.parser.parse(inputLog.get_datetime())
+                last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
+                diff_share = (now - last_date).total_seconds()
+
+                last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
+                diff_ntlm = (now - last_date).total_seconds()
+
+                if (diff_share < 2 and diff_ntlm < 2):
+                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                    return SignatureDetector.RESULT_ROMANCE
+
+        # 4776
+        if (inputLog.get_eventid()==SignatureDetector.EVENT_NTLM):
+            # Check whether 5140 and 4624 events are recorded from the same account within 2 seconds
+            logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
+            if ((logs is not None) and len(logs) > 0):
+                logs_share = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_SHARE)]
+                logs_login = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_LOGIN)]
+
+            if ((logs_share is not None) and len(logs_share) > 0) and ((logs_login is not None) and (len(logs_login) > 0)):
+                now = dateutil.parser.parse(inputLog.get_datetime())
+                last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
+                diff_share = (now - last_date).total_seconds()
+
+                last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
+                diff_login = (now - last_date).total_seconds()
+
+                if (diff_share < 2 and diff_login < 2):
+                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                    return SignatureDetector.RESULT_ROMANCE
 
         return SignatureDetector.RESULT_NORMAL
 
