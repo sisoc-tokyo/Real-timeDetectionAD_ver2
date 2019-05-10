@@ -94,7 +94,8 @@ class SignatureDetector:
 
         elif (inputLog.get_eventid() == SignatureDetector.EVENT_SHARE):
             result = SignatureDetector.isEternalRomace(inputLog)
-            result = SignatureDetector.isEternalWin8(inputLog)
+            if (result == SignatureDetector.RESULT_NORMAL):
+                result = SignatureDetector.isEternalWin8(inputLog)
             if (result == SignatureDetector.RESULT_NORMAL):
                 result =SignatureDetector.isAdminshare(inputLog)
 
@@ -286,7 +287,7 @@ class SignatureDetector:
         # security id is system and process name is cmd.exe
         if (inputLog.get_securityid()==SignatureDetector.SYSTEM and inputLog.get_processname().endswith(SignatureDetector.CMD)):
                 # Check whether ANONYMOUS IPC access is used within 2 seconds
-            logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.ANONYMOUS)
+            logs = SignatureDetector.df[((SignatureDetector.df.securityid == SignatureDetector.ANONYMOUS) | (SignatureDetector.df.accountname == SignatureDetector.ANONYMOUS))
                         & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
 
             if len(logs) > 0:
