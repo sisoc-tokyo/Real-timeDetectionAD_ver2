@@ -13,7 +13,7 @@ DOMAIN_NAME='example2.local'
 MODE_ML='ml'
 MODE_WHITE='whitelist'
 TARGET_EVT=[SignatureDetector.EVENT_TGT,SignatureDetector.EVENT_ST,SignatureDetector.EVENT_PRIV,SignatureDetector.EVENT_PROCESS,
-            SignatureDetector.EVENT_PRIV_SERVICE,SignatureDetector.EVENT_PRIV_OPE,SignatureDetector.EVENT_SHARE]
+            SignatureDetector.EVENT_PRIV_SERVICE,SignatureDetector.EVENT_PRIV_OPE,SignatureDetector.EVENT_SHARE,SignatureDetector.EVENT_LOGIN,SignatureDetector.EVENT_NTLM]
 
 clf_4674 = joblib.load('ocsvm_gt_4674.pkl')
 base_dummies_4674 = pd.read_csv('data_dummies_4674.csv')
@@ -43,14 +43,18 @@ def preds(row):
     if (eventid in TARGET_EVT):
         item_account = [s for s in item if 'Account Name' in s]
         org_accountname = item_account[0].split(":")[1]
+        if eventid == SignatureDetector.EVENT_LOGIN:
+            org_accountname = item_account[1].split(":")[1]
 
         item_clientaddr=""
         item_clientaddr = [s for s in item if 'Source Address' in s]
         if len(item_clientaddr) == 0:
-            item_account = [s for s in item if 'Client Address' in s]
+            item_clientaddr = [s for s in item if 'Client Address' in s]
         if len(item_clientaddr) == 0:
-            item_account = [s for s in item if 'Source Network Address' in s]
-        if(len(item_clientaddr)>=2):
+            item_clientaddr = [s for s in item if 'Source Network Address' in s]
+        if len(item_clientaddr) == 0:
+            item_clientaddr = [s for s in item if 'Source Workstation' in s]
+        if(len(item_clientaddr)>=1):
             clientaddr = item_clientaddr[0].split(":")[1]
 
         item_service=""
@@ -62,6 +66,8 @@ def preds(row):
         item_process = [s for s in item if 'Process Name' in s]
         if (len(item_process) >= 2):
             processname = item_process[0].split("New Process Name:")[1]
+        elif (len(item_process) >=1):
+            processname = item_process[0].split("Process Name:")[1]
 
         item_obj = ""
         item_obj = [s for s in item if 'Object Name' in s]
@@ -120,11 +126,13 @@ def preds(row):
             result = SignatureDetector.check_cmd_whitelist(processname)
 
     if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN):
-        print("attack!!")
+        print(result)
         #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
 
     with open(RESULT_FILE, 'a') as f:
         writer = csv.writer(f)
+        writer.writerow(
+            ["datetime", "eventid", "accountname", "clientaddr", "servicename", "processname", "objectname", "sharedname", "result"])
         writer.writerow([datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname,result])
 
     return result
@@ -133,13 +141,13 @@ def read_csv(inputdir):
 
     files = glob.glob(inputdir+"/*.csv")
     for file in files:
-        print(file)
+        #print(file)
         with open(file, 'r') as f:
             reader = csv.reader(f)
             header = next(reader)
             for row in reader:
                 if row:
-                    print(preds(row))
+                    preds(row)
 
 if __name__ == '__main__':
     if(os.path.isfile(RESULT_FILE)):

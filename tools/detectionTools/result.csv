@@ -1,0 +1,2 @@
+datetime,eventid,accountname,clientaddr,servicename,processname,objectname,sharedname,result
+3/18/2019 4:17:23 AM,4624,           testuser1, 192.168.2.126,,           -,,,normal
