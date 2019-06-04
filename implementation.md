@@ -37,6 +37,8 @@
     * How to use: 
         * Launch Logstash by specifing the conf file.<br/>
 	    e.g.）logstash -f /etc/logstash/conf.d/tshark_ticket.conf &<br/>
+        * Launch tshark by the following command.<br/>
+	    e.g.）tshark -i ens36 -l -Y 'kerberos.msg_type == 11 || kerberos.msg_type == 12 || kerberos.msg_type == 13 || kerberos.msg_type == 14 || kerberos.error_code == 32' -T ek  -e smb2.cmd -e smb2.credits.requested -e kerberos.cipher -e ip.dst -e ip.src -e kerberos.msg_type -e kerberos.error_code -e kerberos.CNameString -e kerberos.cipher -E occurrence=f  > /var/tmp/tshark_ticket.json &<br/>
 
 * <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/tree/master/tools/winlogbeat">Configuration files for Winlogbeat</a>
     * Files
