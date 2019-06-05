@@ -2,7 +2,7 @@ import time, threading, json
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q
 from flask import Flask, request
-import detect_golden
+import update_es
 
 def checkticket(ip_src, cipher, msg_type, timestamp):
 
@@ -44,7 +44,7 @@ def checkticket(ip_src, cipher, msg_type, timestamp):
                 id = h.meta.id
                 index = h.meta.index
                 if msg_type == 12:
-                    detect_golden.detect_golden(ip_src)
+                    update_es.detect_golden(ip_src)
                     es.update(index=index, doc_type='doc', id=id,
                               body={'doc': {'indicator': 'attack: Golden Ticket is used'}})
                 if msg_type == 14:
