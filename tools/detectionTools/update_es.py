@@ -39,7 +39,7 @@ def update_packet(cipher):
     es = Elasticsearch('10.0.19.112:9200')
     s = Search(using=es, index=INDEX_packet)
     s = s[0:10000]
-    q = Q('match', layers__kerberos_cipher = cipher)
+    q = Q('match_phrase', layers__kerberos_cipher = cipher)
     s1 = s.query(q)
     response = s1.execute()
     id=''

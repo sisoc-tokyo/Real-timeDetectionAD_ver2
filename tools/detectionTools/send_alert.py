@@ -38,5 +38,5 @@ class Send_alert:
     def __init__(self, result='-', datetime='-', ip_src='-', eventid='-', accountname='-', clientaddr='-', servicename='-', processname='-', objectname='-', sharedname='-'):
         to_addr = TO_ADDRESS
         subject = SUBJECT
-        msg = self.create_message(FROM_ADDRESS, to_addr, BCC, subject, result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
+        msg = self.create_message(FROM_ADDRESS, to_addr, BCC, subject, result, datetime, ip_src, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
         self.send(FROM_ADDRESS, to_addr, msg)

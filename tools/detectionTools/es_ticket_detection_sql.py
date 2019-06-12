@@ -1,5 +1,5 @@
 import time, threading, json
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Flask, request
 import update_es, send_alert
 import mysql.connector
@@ -50,29 +50,28 @@ try:
                 #     if n >= 1000:
                 #         break
                 #
-                # n = 0
-                # update_flag_packet = True
-                # while update_flag_packet:
-                #     update_flag_packet = update_es.update_packet(cipher)
-                #     time.sleep(1)
-                #     n += 1
-                #     if n >= 1000:
-                #         break
-
-                send_alert.Send_alert(datetime=timestamp, ip_src=ip_src, eventid='-', accountname='-', clientaddr='-', servicename='-', processname='-', objectname='-', sharedname='-')
+                n = 0
+                update_flag_packet = True
+                while update_flag_packet:
+                    update_flag_packet = update_es.update_packet(cipher)
+                    time.sleep(1)
+                    n += 1
+                    if n >= 1000:
+                        break
 
                 with open('./detected_ticket.log', mode='a') as f:
+                    utctime = datetime.fromtimestamp(int(timestamp[:10]), timezone.utc)
                     if msg_type == 12:
-                        f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(timestamp) + ' ' + str(cipher) + '\n')
-                        print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(timestamp))
-                        send_alert.Send_alert(result='Golden ticket was used ', datetime=timestamp, ip_src=ip_src, eventid='-', accountname='-',
+                        f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
+                        print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
+                        send_alert.Send_alert(result='Golden ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
                                               clientaddr='-', servicename='-', processname='-', objectname='-',
                                               sharedname='-')
 
                     if msg_type == 14:
-                        print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(timestamp))
-                        f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(timestamp) + ' ' + str(cipher) + '\n')
-                        send_alert.Send_alert(result='Silver ticket was used ', datetime=timestamp, ip_src=ip_src, eventid='-', accountname='-',
+                        print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
+                        f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
+                        send_alert.Send_alert(result='Silver ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
                                               clientaddr='-', servicename='-', processname='-', objectname='-',
                                               sharedname='-')
 
