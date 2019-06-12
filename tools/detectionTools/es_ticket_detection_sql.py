@@ -1,7 +1,7 @@
 import time, threading, json
 from datetime import datetime
 from flask import Flask, request
-import update_es
+import update_es, send_alert
 import mysql.connector
 import atexit
 
@@ -59,13 +59,22 @@ try:
                 #     if n >= 1000:
                 #         break
 
+                send_alert.Send_alert(datetime=timestamp, ip_src=ip_src, eventid='-', accountname='-', clientaddr='-', servicename='-', processname='-', objectname='-', sharedname='-')
+
                 with open('./detected_ticket.log', mode='a') as f:
                     if msg_type == 12:
                         f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(timestamp) + ' ' + str(cipher) + '\n')
                         print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(timestamp))
+                        send_alert.Send_alert(result='Golden ticket was used ', datetime=timestamp, ip_src=ip_src, eventid='-', accountname='-',
+                                              clientaddr='-', servicename='-', processname='-', objectname='-',
+                                              sharedname='-')
+
                     if msg_type == 14:
                         print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(timestamp))
                         f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(timestamp) + ' ' + str(cipher) + '\n')
+                        send_alert.Send_alert(result='Silver ticket was used ', datetime=timestamp, ip_src=ip_src, eventid='-', accountname='-',
+                                              clientaddr='-', servicename='-', processname='-', objectname='-',
+                                              sharedname='-')
 
 
     # Insert msg_type 11 or 13 data into SQL.
