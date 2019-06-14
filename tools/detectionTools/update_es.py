@@ -16,7 +16,7 @@ def update_event(ip_src):
     es = Elasticsearch('10.0.19.112:9200')
     s = Search(using=es, index=INDEX_real)
     s = s[0:10000]
-    q = Q('match', indicator__keyword= WARN) & Q('match', event_id = EVENT_ST) & Q('wildcard', event_data__IpAddress__keyword = ip_ptn)
+    q = Q('match_phrase', indicator__keyword= WARN) & Q('match_phrase', event_id = EVENT_ST) & Q('wildcard', event_data__IpAddress__keyword = ip_ptn)
     s1 = s.query(q)
     response = s1.execute()
     id=''
@@ -39,7 +39,7 @@ def update_packet(cipher):
     es = Elasticsearch('10.0.19.112:9200')
     s = Search(using=es, index=INDEX_packet)
     s = s[0:10000]
-    q = Q('match_phrase', layers__kerberos_cipher = cipher)
+    q = Q('match_phrase', layers__kerberos_cipher = cipher) & Q('match_phrase', indicator = 'normal')
     s1 = s.query(q)
     response = s1.execute()
     id=''

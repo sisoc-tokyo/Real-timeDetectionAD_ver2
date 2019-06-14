@@ -7,11 +7,6 @@ from email.utils import formatdate
 # TO_ADDRESS = 'change here'
 # BCC = ''
 # SUBJECT = 'change here'
-FROM_ADDRESS = 'stix2xestest@gmail.com'
-MY_PASSWORD = 'testPassw0rd!'
-TO_ADDRESS = 'watrvir@gmail.com'
-BCC = ''
-SUBJECT = 'Indicator_matched'
 
 class Send_alert:
 
