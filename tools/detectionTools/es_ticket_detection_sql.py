@@ -41,15 +41,16 @@ try:
                 print('TKT Expired at ' + str(timestamp))
 
             else:
-                # n = 0
-                # update_flag_event = True
-                # while update_flag_event:
-                #     update_flag_event = update_es.update_event(ip_src)
-                #     time.sleep(1)
-                #     n += 1
-                #     if n >= 1000:
-                #         break
-                #
+                if msg_type == 12:
+                    n = 0
+                    update_flag_event = True
+                    while update_flag_event:
+                        update_flag_event = update_es.update_event(ip_src)
+                        time.sleep(1)
+                        n += 1
+                        if n >= 1000:
+                            break
+
                 n = 0
                 update_flag_packet = True
                 while update_flag_packet:
