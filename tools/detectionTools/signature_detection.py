@@ -4,6 +4,7 @@ import pandas as pd
 import InputLog
 import dateutil.parser
 import time
+from pytz import timezone
 
 class SignatureDetector:
 
@@ -229,9 +230,11 @@ class SignatureDetector:
             if ((logs_login is not None) and len(logs_login) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
                 now = dateutil.parser.parse(inputLog.get_datetime())
                 last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
                 diff_login = (now - last_date).total_seconds()
 
                 last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
                 diff_ntlm = (now - last_date).total_seconds()
 
                 if (diff_login < 2 and diff_ntlm < 2):
