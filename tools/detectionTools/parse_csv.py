@@ -90,6 +90,8 @@ def preds(row):
     eventid = eventid.strip("'")
     if org_accountname != None:
         accountname = org_accountname.strip("'")
+        accountname = accountname.strip()
+        accountname = accountname.strip('\t')
         accountname = accountname.lower()
         accountname = accountname.split('@')[0]
         if (accountname.find(DOMAIN_NAME)> -1 or len(accountname)==0):
@@ -131,8 +133,6 @@ def preds(row):
 
     with open(RESULT_FILE, 'a') as f:
         writer = csv.writer(f)
-        writer.writerow(
-            ["datetime", "eventid", "accountname", "clientaddr", "servicename", "processname", "objectname", "sharedname", "result"])
         writer.writerow([datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname,result])
 
     return result
@@ -154,5 +154,11 @@ if __name__ == '__main__':
         os.remove(RESULT_FILE)
     if(len(sys.argv)>=3):
         mode=sys.argv[2]
+
+    with open(RESULT_FILE, 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow(
+            ["datetime", "eventid", "accountname", "clientaddr", "servicename", "processname", "objectname",
+             "sharedname", "result"])
 
     read_csv(sys.argv[1])

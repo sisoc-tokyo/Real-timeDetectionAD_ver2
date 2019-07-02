@@ -285,17 +285,24 @@ class SignatureDetector:
     def isEternalBlue(inputLog):
         time.sleep(1)
         # security id is system and process name is cmd.exe
+        logs=None
+
         if (inputLog.get_securityid()==SignatureDetector.SYSTEM and inputLog.get_processname().endswith(SignatureDetector.CMD)):
                 # Check whether ANONYMOUS IPC access is used within 2 seconds
             logs = SignatureDetector.df[((SignatureDetector.df.securityid == SignatureDetector.ANONYMOUS) | (SignatureDetector.df.accountname == SignatureDetector.ANONYMOUS))
                         & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
 
-            if len(logs) > 0:
-                now=dateutil.parser.parse(inputLog.get_datetime())
-                last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
-                diff=(now-last_date).total_seconds()
-                if(diff<180):
-                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
+        if ((inputLog.get_securityid() == SignatureDetector.ANONYMOUS or inputLog.get_accountname()== SignatureDetector.ANONYMOUS)
+            and (inputLog.get_sharedname().endswith(SignatureDetector.IPC))):
+            logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.SYSTEM)
+                                        & (SignatureDetector.df.processname.str.endswith(SignatureDetector.CMD))]
+
+        if (logs and len(logs) > 0):
+            now = dateutil.parser.parse(inputLog.get_datetime())
+            last_date = dateutil.parser.parse(logs.tail(1).datetime.str.cat())
+            diff = (now - last_date).total_seconds()
+            if (diff < 180):
+                print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                return SignatureDetector.RESULT_ROMANCE
 
         return SignatureDetector.RESULT_NORMAL
