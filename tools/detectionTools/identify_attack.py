@@ -24,11 +24,16 @@ class identify_attack:
             return identify_attack.TACTICS["TA0003"]
 
         elif (result == SignatureDetector.RESULT_CMD):
-            cmds = inputLog.get_processname().split("\\")
-            cmd = cmds[len(cmds) - 1]
+            if (inputLog.get_processname() == "c:\\windows\\system32\\services.exe"):
+                cmd = inputLog.get_objectname()
+            else:
+                cmds = inputLog.get_processname().split("\\")
+                cmd = cmds[len(cmds) - 1]
+
             log = SignatureDetector.df_cmd[(SignatureDetector.df_cmd.processname == cmd)].tail()
             if len(log) > 0:
                 tactics=log["tactics"].iat[0]
+
                 return tactics
 
         return ""

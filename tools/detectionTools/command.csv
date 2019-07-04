@@ -19,3 +19,4 @@
 "sc.exe","TA0003"
 "schtasks.exe","TA0003"
 "at.exe","TA0003"
+"psexesvc","TA0002"
