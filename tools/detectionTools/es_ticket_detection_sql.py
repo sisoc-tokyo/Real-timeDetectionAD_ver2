@@ -41,6 +41,22 @@ try:
                 print('TKT Expired at ' + str(timestamp))
 
             else:
+                with open('./detected_ticket.log', mode='a') as f:
+                    utctime = datetime.fromtimestamp(int(timestamp[:10]), timezone.utc)
+                    if msg_type == 12:
+                        f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
+                        print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
+                        send_alert.Send_alert(result='Golden ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                                              clientaddr='-', servicename='-', processname='-', objectname='-',
+                                              sharedname='-')
+
+                    if msg_type == 14:
+                        print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
+                        f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
+                        send_alert.Send_alert(result='Silver ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                                              clientaddr='-', servicename='-', processname='-', objectname='-',
+                                              sharedname='-')
+                        
                 if msg_type == 12:
                     n = 0
                     update_flag_event = True
@@ -59,23 +75,6 @@ try:
                     n += 1
                     if n >= 2:
                         break
-
-                with open('./detected_ticket.log', mode='a') as f:
-                    utctime = datetime.fromtimestamp(int(timestamp[:10]), timezone.utc)
-                    if msg_type == 12:
-                        f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
-                        print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
-                        send_alert.Send_alert(result='Golden ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
-                                              clientaddr='-', servicename='-', processname='-', objectname='-',
-                                              sharedname='-')
-
-                    if msg_type == 14:
-                        print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
-                        f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
-                        send_alert.Send_alert(result='Silver ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
-                                              clientaddr='-', servicename='-', processname='-', objectname='-',
-                                              sharedname='-')
-
 
     # Insert msg_type 11 or 13 data into SQL.
     def sqlinput_kereberos_msg(ip_src, ip_dst, cipher, msg_type, timestamp):
