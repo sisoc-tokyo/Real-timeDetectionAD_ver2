@@ -105,7 +105,7 @@ def preds():
         else:
             processname = processname.strip().strip("'")
             result = SignatureDetector.check_cmd_whitelist(processname)
-    if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN):
+    if (result != SignatureDetector.RESULT_NORMAL and result != ML.RESULT_WARN and result != SignatureDetector.WARN):
         print(result)
         print(inputLog.get_eventid() + "," + inputLog.get_accountname() + "," + inputLog.get_clientaddr() + "," + inputLog.get_processname()+ "," + inputLog.get_sharedname())
         tactics=identify_attack.identify_tactics(result,inputLog)
