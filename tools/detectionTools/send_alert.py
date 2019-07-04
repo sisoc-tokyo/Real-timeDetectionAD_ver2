@@ -7,6 +7,11 @@ from email.utils import formatdate
 # TO_ADDRESS = 'change here'
 # BCC = ''
 # SUBJECT = 'change here'
+FROM_ADDRESS = 'coeutokyo@gmail.com'
+MY_PASSWORD = 'testPassw0rd!'
+TO_ADDRESS = 'coeutokyo@gmail.com'
+BCC = ''
+SUBJECT = 'Attack detected'
 
 class Send_alert:
 
