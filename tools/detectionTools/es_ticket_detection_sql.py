@@ -48,7 +48,7 @@ try:
                         update_flag_event = update_es.update_event(ip_src)
                         time.sleep(1)
                         n += 1
-                        if n >= 1000:
+                        if n >= 2:
                             break
 
                 n = 0
@@ -57,7 +57,7 @@ try:
                     update_flag_packet = update_es.update_packet(cipher)
                     time.sleep(1)
                     n += 1
-                    if n >= 1000:
+                    if n >= 2:
                         break
 
                 with open('./detected_ticket.log', mode='a') as f:

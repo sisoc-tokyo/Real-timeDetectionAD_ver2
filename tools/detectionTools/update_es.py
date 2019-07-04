@@ -14,7 +14,7 @@ DOC_TYPE="doc"
 def update_event(ip_src):
     ip_ptn='*'+ip_src+'*'
     es = Elasticsearch('10.0.19.112:9200')
-    s = Search(using=es, index=INDEX_real).params(request_timeout=60)
+    s = Search(using=es, index=INDEX_real).params(request_timeout=600)
     s = s[0:10000]
     q = Q('match_phrase', indicator__keyword= WARN) & Q('match_phrase', event_id = EVENT_ST) & Q('wildcard', event_data__IpAddress__keyword = ip_ptn)
     s1 = s.query(q)
@@ -35,7 +35,7 @@ def update_event(ip_src):
 
 def update_packet(cipher):
     es = Elasticsearch('10.0.19.112:9200')
-    s = Search(using=es, index=INDEX_packet).params(request_timeout=60)
+    s = Search(using=es, index=INDEX_packet).params(request_timeout=600)
     s = s[0:10000]
     q = Q('match_phrase', layers__kerberos_cipher = cipher) & Q('match_phrase', indicator = 'normal')
     s1 = s.query(q)
