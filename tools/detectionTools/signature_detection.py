@@ -42,6 +42,7 @@ class SignatureDetector:
     df_cmd = pd.DataFrame(data=None, index=None, columns=["processname","tactics"], dtype=None, copy=False)
     df_cmd_white = pd.DataFrame(data=None, index=None, columns=["processname"], dtype=None, copy=False)
 
+    cnt=0
 
     def __init__(self):
         print("constructor called")
@@ -75,18 +76,17 @@ class SignatureDetector:
         result=SignatureDetector.RESULT_NORMAL
 
 
-        # if (inputLog.get_eventid()==SignatureDetector.EVENT_ST) :
-        #     result=SignatureDetector.hasNoTGT(inputLog)
+        if (inputLog.get_eventid()==SignatureDetector.EVENT_ST) :
+            result=SignatureDetector.hasNoTGT(inputLog)
 
-        # elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV):
-        #     result =SignatureDetector.isNotAdmin(inputLog)
-        #
-        # elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_OPE
-        #         or inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_SERVICE):
-        #     result = SignatureDetector.isSuspiciousProcess(inputLog)
+        elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV):
+            result =SignatureDetector.isNotAdmin(inputLog)
 
-        #elif (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
-        if (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
+        elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_OPE
+                or inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_SERVICE):
+            result = SignatureDetector.isSuspiciousProcess(inputLog)
+
+        elif (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
             result = SignatureDetector.isEternalBlue(inputLog)
             if (result== SignatureDetector.RESULT_NORMAL ):
                 result = SignatureDetector.isSuspiciousProcess(inputLog)
@@ -241,8 +241,10 @@ class SignatureDetector:
                 diff_ntlm = (now - last_date).total_seconds()
 
                 if (diff_login < 2 and diff_ntlm < 2):
-                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
+                    SignatureDetector.cnt=SignatureDetector.cnt+1
+                    if SignatureDetector.cnt>=2:
+                        print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
+                        return SignatureDetector.RESULT_ROMANCE
 
         # 4624
         if (inputLog.get_eventid()==SignatureDetector.EVENT_LOGIN):
@@ -264,8 +266,10 @@ class SignatureDetector:
                 diff_ntlm = (now - last_date).total_seconds()
 
                 if (diff_share < 2 and diff_ntlm < 2):
-                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
+                    SignatureDetector.cnt=SignatureDetector.cnt+1
+                    if SignatureDetector.cnt>=2:
+                        print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
+                        return SignatureDetector.RESULT_ROMANCE
 
         # 4776
         if (inputLog.get_eventid()==SignatureDetector.EVENT_NTLM):
@@ -287,8 +291,10 @@ class SignatureDetector:
                 diff_login = (now - last_date).total_seconds()
 
                 if (diff_share < 2 and diff_login < 2):
-                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
+                    SignatureDetector.cnt = SignatureDetector.cnt + 1
+                    if SignatureDetector.cnt >= 2:
+                        print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
+                        return SignatureDetector.RESULT_ROMANCE
 
         return SignatureDetector.RESULT_NORMAL
 
