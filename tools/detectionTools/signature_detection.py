@@ -26,6 +26,7 @@ class SignatureDetector:
     SYSTEM="system"
     ANONYMOUS="anonymous logon"
     CMD="cmd.exe"
+    RUNDLL="rundll32.exe"
     RESULT_NORMAL="normal"
     RESULT_PRIV="attack: Unexpected privilege is used"
     RESULT_CMD="attack: command on blackList is used"
@@ -71,24 +72,21 @@ class SignatureDetector:
         :return : True(1) if attack, False(0) if normal
         """
 
-        #print(SignatureDetector.df)
-
-        #SignatureDetector.df["accountname"] = SignatureDetector.df["accountname"].str.lower()
-
         result=SignatureDetector.RESULT_NORMAL
 
 
-        if (inputLog.get_eventid()==SignatureDetector.EVENT_ST) :
-            result=SignatureDetector.hasNoTGT(inputLog)
+        # if (inputLog.get_eventid()==SignatureDetector.EVENT_ST) :
+        #     result=SignatureDetector.hasNoTGT(inputLog)
 
-        elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV):
-            result =SignatureDetector.isNotAdmin(inputLog)
+        # elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV):
+        #     result =SignatureDetector.isNotAdmin(inputLog)
+        #
+        # elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_OPE
+        #         or inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_SERVICE):
+        #     result = SignatureDetector.isSuspiciousProcess(inputLog)
 
-        elif (inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_OPE
-                or inputLog.get_eventid() == SignatureDetector.EVENT_PRIV_SERVICE):
-            result = SignatureDetector.isSuspiciousProcess(inputLog)
-
-        elif (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
+        #elif (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
+        if (inputLog.get_eventid() == SignatureDetector.EVENT_PROCESS):
             result = SignatureDetector.isEternalBlue(inputLog)
             if (result== SignatureDetector.RESULT_NORMAL ):
                 result = SignatureDetector.isSuspiciousProcess(inputLog)
@@ -97,6 +95,8 @@ class SignatureDetector:
             result = SignatureDetector.isEternalRomace(inputLog)
             if (result == SignatureDetector.RESULT_NORMAL):
                 result = SignatureDetector.isEternalWin8(inputLog)
+            if (result == SignatureDetector.RESULT_NORMAL):
+                result = SignatureDetector.isEternalBlue(inputLog)
             if (result == SignatureDetector.RESULT_NORMAL):
                 result =SignatureDetector.isAdminshare(inputLog)
 
@@ -150,17 +150,17 @@ class SignatureDetector:
         #print(inputLog.get_clientaddr()+","+inputLog.get_accountname())
 
         if (inputLog.get_processname().find(SignatureDetector.SYSTEM_DIR)==-1 and inputLog.get_processname().find(SignatureDetector.SYSTEM_DIR2)==-1):
-            print("Signature B: "+SignatureDetector.RESULT_MAL_CMD)
+            #print("Signature B: "+SignatureDetector.RESULT_MAL_CMD)
             return SignatureDetector.RESULT_MAL_CMD
         cmds=inputLog.get_processname().split("\\")
         cmd=cmds[len(cmds)-1]
         logs = SignatureDetector.df_cmd[SignatureDetector.df_cmd.processname.str.contains(cmd)]
         if len(logs)>0:
-            print("Signature B: " + SignatureDetector.RESULT_CMD)
+            #print("Signature B: " + SignatureDetector.RESULT_CMD)
             return SignatureDetector.RESULT_CMD
 
-        if inputLog.get_objectname().find(SignatureDetector.PSEXESVC)>=0:
-            print("Signature B: " + SignatureDetector.RESULT_CMD)
+        if (inputLog.get_objectname().find(SignatureDetector.PSEXESVC)>=0):
+            #print("Signature B: " + SignatureDetector.RESULT_CMD)
             return SignatureDetector.RESULT_CMD
 
         return SignatureDetector.RESULT_NORMAL
@@ -203,10 +203,12 @@ class SignatureDetector:
 
         if ((logs is not None) and len(logs) > 0):
             now=dateutil.parser.parse(inputLog.get_datetime())
+            now = timezone('UTC').localize(now)
             last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
+            last_date = timezone('UTC').localize(last_date)
             diff=(now-last_date).total_seconds()
             if(diff<2):
-                print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                print("Signature E(EternalRomace): " + SignatureDetector.RESULT_ROMANCE)
                 return SignatureDetector.RESULT_ROMANCE
 
         return SignatureDetector.RESULT_NORMAL
@@ -229,6 +231,7 @@ class SignatureDetector:
 
             if ((logs_login is not None) and len(logs_login) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
                 now = dateutil.parser.parse(inputLog.get_datetime())
+                now = timezone('UTC').localize(now)
                 last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
                 last_date = timezone('UTC').localize(last_date)
                 diff_login = (now - last_date).total_seconds()
@@ -238,7 +241,7 @@ class SignatureDetector:
                 diff_ntlm = (now - last_date).total_seconds()
 
                 if (diff_login < 2 and diff_ntlm < 2):
-                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
                     return SignatureDetector.RESULT_ROMANCE
 
         # 4624
@@ -251,14 +254,17 @@ class SignatureDetector:
 
             if ((logs_share is not None) and len(logs_share) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
                 now = dateutil.parser.parse(inputLog.get_datetime())
+                now = timezone('UTC').localize(now)
                 last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
                 diff_share = (now - last_date).total_seconds()
 
                 last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
                 diff_ntlm = (now - last_date).total_seconds()
 
                 if (diff_share < 2 and diff_ntlm < 2):
-                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
                     return SignatureDetector.RESULT_ROMANCE
 
         # 4776
@@ -271,14 +277,17 @@ class SignatureDetector:
 
             if ((logs_share is not None) and len(logs_share) > 0) and ((logs_login is not None) and (len(logs_login) > 0)):
                 now = dateutil.parser.parse(inputLog.get_datetime())
+                now = timezone('UTC').localize(now)
                 last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
                 diff_share = (now - last_date).total_seconds()
 
                 last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
                 diff_login = (now - last_date).total_seconds()
 
                 if (diff_share < 2 and diff_login < 2):
-                    print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
                     return SignatureDetector.RESULT_ROMANCE
 
         return SignatureDetector.RESULT_NORMAL
@@ -287,25 +296,34 @@ class SignatureDetector:
     @staticmethod
     def isEternalBlue(inputLog):
         time.sleep(1)
-        # security id is system and process name is cmd.exe
         logs=None
 
-        if (inputLog.get_securityid()==SignatureDetector.SYSTEM and inputLog.get_processname().endswith(SignatureDetector.CMD)):
-                # Check whether ANONYMOUS IPC access is used within 2 seconds
+        # security id is system and (process name is cmd.exe or rundll32.exe)
+        if ((inputLog.get_securityid()==SignatureDetector.SYSTEM) and
+            (inputLog.get_processname().endswith(SignatureDetector.CMD) or inputLog.get_processname().endswith(SignatureDetector.RUNDLL))):
+            # Check whether ANONYMOUS IPC access is used within 2 seconds
             logs = SignatureDetector.df[((SignatureDetector.df.securityid == SignatureDetector.ANONYMOUS) | (SignatureDetector.df.accountname == SignatureDetector.ANONYMOUS))
                         & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
 
+        # security id is ANONYMOUS and share name is IPC security id is system and (process name is cmd.exe or rundll32) is recorded  within 2 seconds
         if ((inputLog.get_securityid() == SignatureDetector.ANONYMOUS or inputLog.get_accountname()== SignatureDetector.ANONYMOUS)
             and (inputLog.get_sharedname().endswith(SignatureDetector.IPC))):
+            # Check whether
             logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.SYSTEM)
-                                        & (SignatureDetector.df.processname.str.endswith(SignatureDetector.CMD))]
+                                        & (
+                                            ((SignatureDetector.df.processname.str.endswith(SignatureDetector.CMD) |
+                                                (SignatureDetector.df.processname.str.endswith(SignatureDetector.RUNDLL))
+                                             ))
+                                        )]
 
-        if (logs and len(logs) > 0):
+        if ((logs is not None) and len(logs) > 0):
             now = dateutil.parser.parse(inputLog.get_datetime())
+            now = timezone('UTC').localize(now)
             last_date = dateutil.parser.parse(logs.tail(1).datetime.str.cat())
+            last_date = timezone('UTC').localize(last_date)
             diff = (now - last_date).total_seconds()
             if (diff < 180):
-                print("Signature E: " + SignatureDetector.RESULT_ROMANCE)
+                print("Signature E(EternalBlue): " + SignatureDetector.RESULT_ROMANCE)
                 return SignatureDetector.RESULT_ROMANCE
 
         return SignatureDetector.RESULT_NORMAL
