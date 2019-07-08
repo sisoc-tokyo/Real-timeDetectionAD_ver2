@@ -17,7 +17,9 @@
         * ocsvm_gt_XXXX.pkl files  (optional): Model files for Machine learning. They are created by Goldenticket_One-class_SVM.ipynb
         * data_dummies_XXXX.csv  (optional): One-Hot encoding dummy files for Machine learning. They are created by Goldenticket_One-class_SVM.ipynb
     * Location: Deploy on Detection Server
-    * How to use: launch rest_ocsvm_gt.py 
+    * How to use: launch rest_ocsvm_gt.py and es_ticket_detection.py<br/>
+    e.g.）python rest_ocsvm_gt.py <br/>
+    python es_ticket_detection.py
     * Notes: REST API is running on Flask.
 
 * <a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/tree/master/tools/logstash">Configuration files for Logstash for Event Logs</a>
