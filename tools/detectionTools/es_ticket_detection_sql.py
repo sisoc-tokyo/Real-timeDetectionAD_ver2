@@ -6,7 +6,8 @@ import mysql.connector
 import atexit
 
 try:
-    conn = mysql.connector.connect(user='root', password='Passw0rd!', host='10.0.19.111', database='kerberos')
+    #conn = mysql.connector.connect(user='root', password='Passw0rd!', host='10.0.19.111', database='kerberos')
+    conn = mysql.connector.connect(user='root', host='localhost', database='kerberos')
     cur = conn.cursor()
 
     # Search old cipher from SQL.
@@ -56,7 +57,7 @@ try:
                         send_alert.Send_alert(result='Silver ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
                                               clientaddr='-', servicename='-', processname='-', objectname='-',
                                               sharedname='-')
-                        
+
                 if msg_type == 12:
                     n = 0
                     update_flag_event = True

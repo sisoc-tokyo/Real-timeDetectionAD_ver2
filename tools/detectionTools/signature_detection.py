@@ -203,9 +203,15 @@ class SignatureDetector:
 
         if ((logs is not None) and len(logs) > 0):
             now=dateutil.parser.parse(inputLog.get_datetime())
-            now = timezone('UTC').localize(now)
+            try:
+                now = timezone('UTC').localize(now)
+            except:
+                print('error localize:' + str(now))
             last_date=dateutil.parser.parse(logs.tail(1).datetime.str.cat())
-            last_date = timezone('UTC').localize(last_date)
+            try:
+                last_date = timezone('UTC').localize(last_date)
+            except:
+                print('error localize:' + str(now))
             diff=(now-last_date).total_seconds()
             if(diff<2):
                 print("Signature E(EternalRomace): " + SignatureDetector.RESULT_ROMANCE)
@@ -231,7 +237,10 @@ class SignatureDetector:
 
             if ((logs_login is not None) and len(logs_login) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
                 now = dateutil.parser.parse(inputLog.get_datetime())
-                now = timezone('UTC').localize(now)
+                try:
+                    now = timezone('UTC').localize(now)
+                except:
+                    print('error localize:'+str(now))
                 last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
                 last_date = timezone('UTC').localize(last_date)
                 diff_login = (now - last_date).total_seconds()
@@ -324,7 +333,10 @@ class SignatureDetector:
 
         if ((logs is not None) and len(logs) > 0):
             now = dateutil.parser.parse(inputLog.get_datetime())
-            now = timezone('UTC').localize(now)
+            try:
+                now = timezone('UTC').localize(now)
+            except:
+                print('error localize:' + str(now))
             last_date = dateutil.parser.parse(logs.tail(1).datetime.str.cat())
             last_date = timezone('UTC').localize(last_date)
             diff = (now - last_date).total_seconds()

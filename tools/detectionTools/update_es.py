@@ -1,19 +1,22 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q
 import sys
+import datetime
 
+today= datetime.date.today()
 EVENT_ST="4769"
 WARN="warning:ST without TGT"
 #WARN="attack:test"
 RESULT_NOTGT_real="attack: Golden Ticket is used"
 RESULT_NORMAL="normal"
-INDEX_real="realtime-*"
-INDEX_packet="packet"
+INDEX_real="realtime-" + str(today)
+INDEX_packet="packet-" + str(today)
 DOC_TYPE="doc"
+#es = Elasticsearch('10.0.19.112:9200')
+es = Elasticsearch('192.168.2.140:9200')
 
 def update_event(ip_src):
     ip_ptn='*'+ip_src+'*'
-    es = Elasticsearch('10.0.19.112:9200')
     try:
         s = Search(using=es, index=INDEX_real).params(request_timeout=600)
         s = s[0:10000]
@@ -37,7 +40,6 @@ def update_event(ip_src):
 
 
 def update_packet(cipher):
-    es = Elasticsearch('10.0.19.112:9200')
     try:
         s = Search(using=es, index=INDEX_packet).params(request_timeout=600)
         s = s[0:10000]
