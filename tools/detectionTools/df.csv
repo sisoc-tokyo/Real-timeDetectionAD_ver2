@@ -374,3 +374,427 @@
 372,2019-07-09T09:07:11.547Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
 373,2019-07-09T09:07:11.664Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
 374,2019-07-09T09:07:11.789Z,4688,dc2016$,::1,,c:\windows\syswow64\windowspowershell\v1.0\powershell.exe,,,s-1-5-18
+375,2019-07-09T09:08:37.881Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-18
+376,2019-07-09T09:08:37.887Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+377,2019-07-09T09:08:45.024Z,5140,anonymous logon,10.1.1.99,,,,\*\ipc$,s-1-5-7
+378,2019-07-09T09:08:45.197Z,5140,dc2016$,10.1.1.99,,,,\*\admin$,s-1-5-18
+379,2019-07-09T09:08:45.226Z,5140,dc2016$,10.1.1.99,,,,\*\ipc$,s-1-5-18
+380,2019-07-09T09:08:45.331Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+381,2019-07-09T09:08:45.340Z,4688,dc2016$,::1,,c:\windows\system32\windowspowershell\v1.0\powershell.exe,,,s-1-5-18
+382,2019-07-09T09:08:45.346Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
+383,2019-07-09T09:08:45.453Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+384,2019-07-09T09:08:45.580Z,4688,dc2016$,::1,,c:\windows\syswow64\windowspowershell\v1.0\powershell.exe,,,s-1-5-18
+385,2019-07-09T09:08:45.584Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
+386,2019-07-09T09:08:45.677Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+387,2019-07-09T09:10:15.933Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+388,2019-07-09T09:10:15.950Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+389,2019-07-09T09:10:15.950Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+390,2019-07-09T09:10:15.950Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+391,2019-07-09T09:10:15.950Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+392,2019-07-09T09:11:40.786Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+393,2019-07-09T09:15:16.099Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+394,2019-07-09T09:15:16.089Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+395,2019-07-09T09:15:16.100Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+396,2019-07-09T09:15:16.100Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+397,2019-07-09T09:15:16.100Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+398,2019-07-09T09:16:04.350Z,4768,win10$,::ffff:10.1.1.30,,,,,
+399,2019-07-09T09:16:04.375Z,4769,win10$,::ffff:10.1.1.30,,,,,
+400,2019-07-09T09:16:04.461Z,4768,win10$,::ffff:10.1.1.30,,,,,
+401,2019-07-09T09:16:04.477Z,4769,win10$,::ffff:10.1.1.30,,,,,
+402,2019-07-09T09:16:04.537Z,4769,win10$,::ffff:10.1.1.30,,,,,
+403,2019-07-09T09:16:04.729Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+404,2019-07-09T09:16:10.407Z,4769,win10$,::ffff:10.1.1.30,,,,,
+405,2019-07-09T09:16:04.862Z,4769,win10$,::ffff:10.1.1.30,,,,,
+406,2019-07-09T09:16:10.411Z,4769,win10$,::ffff:10.1.1.30,,,,,
+407,2019-07-09T09:16:04.866Z,4769,win10$,::ffff:10.1.1.30,,,,,
+408,2019-07-09T09:16:13.079Z,4769,win10$,::ffff:10.1.1.30,,,,,
+409,2019-07-09T09:16:14.511Z,4768,win10$,::ffff:10.1.1.30,,,,,
+410,2019-07-09T09:16:14.515Z,4769,win10$,::ffff:10.1.1.30,,,,,
+411,2019-07-09T09:16:04.871Z,5140,win10$,10.1.1.30,,,,\*\sysvol,s-1-5-21-388095587-3916525220-2479421359-3602
+412,2019-07-09T09:16:28.008Z,5140,anonymous logon,10.1.1.30,,,,\*\ipc$,s-1-5-7
+413,2019-07-09T09:17:02.861Z,4769,win10$,::ffff:10.1.1.30,,,,,
+414,2019-07-09T09:17:02.868Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+415,2019-07-09T09:18:37.906Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+416,2019-07-09T09:20:16.212Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+417,2019-07-09T09:20:16.223Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+418,2019-07-09T09:20:16.223Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+419,2019-07-09T09:20:16.223Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+420,2019-07-09T09:20:16.223Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+421,2019-07-09T09:25:16.350Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+422,2019-07-09T09:25:16.350Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+423,2019-07-09T09:25:16.339Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+424,2019-07-09T09:25:16.350Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+425,2019-07-09T09:25:16.350Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+426,2019-07-09T09:26:40.786Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+427,2019-07-09T09:28:37.914Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-18
+428,2019-07-09T09:28:37.917Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+429,2019-07-09T09:30:16.464Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+430,2019-07-09T09:30:16.476Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+431,2019-07-09T09:30:16.476Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+432,2019-07-09T09:30:16.476Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+433,2019-07-09T09:30:16.476Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+434,2019-07-09T09:32:02.906Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+435,2019-07-09T09:35:16.604Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+436,2019-07-09T09:38:37.937Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+437,2019-07-09T09:35:16.614Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+438,2019-07-09T09:35:16.614Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+439,2019-07-09T09:35:16.614Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+440,2019-07-09T09:35:16.614Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+441,2019-07-09T09:57:08.197Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+442,2019-07-09T09:41:40.802Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+443,2019-07-09T09:40:16.746Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+444,2019-07-09T09:40:16.756Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+445,2019-07-09T09:40:16.756Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+446,2019-07-09T09:40:16.757Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+447,2019-07-09T09:40:16.757Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+448,2019-07-09T09:45:16.879Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+449,2019-07-09T09:45:16.889Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+450,2019-07-09T09:45:16.889Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+451,2019-07-09T09:45:16.890Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+452,2019-07-09T09:45:16.890Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+453,2019-07-09T09:47:02.940Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+454,2019-07-09T09:48:37.940Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-18
+455,2019-07-09T09:48:37.943Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+456,2019-07-09T09:50:17.016Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+457,2019-07-09T09:50:17.026Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+458,2019-07-09T09:50:17.026Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+459,2019-07-09T09:50:17.026Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+460,2019-07-09T09:50:17.027Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+461,2019-07-09T09:55:17.140Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+462,2019-07-09T09:55:17.151Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+463,2019-07-09T09:55:17.151Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+464,2019-07-09T09:55:17.151Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+465,2019-07-09T09:55:17.151Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+466,2019-07-09T09:56:33.445Z,5140,anonymous logon,10.1.1.30,,,,\*\ipc$,s-1-5-7
+467,2019-07-09T09:56:40.821Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+468,2019-07-09T09:58:37.980Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+469,2019-07-09T10:00:17.282Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+470,2019-07-09T10:00:17.293Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+471,2019-07-09T10:00:17.293Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+472,2019-07-09T10:00:17.293Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+473,2019-07-09T10:00:17.293Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+474,2019-07-09T10:04:28.599Z,5140,anonymous logon,10.1.1.99,,,,\*\ipc$,s-1-5-7
+475,2019-07-09T10:04:28.722Z,5140,dc2016$,10.1.1.99,,,,\*\admin$,s-1-5-18
+476,2019-07-09T10:04:28.743Z,5140,dc2016$,10.1.1.99,,,,\*\ipc$,s-1-5-18
+477,2019-07-09T10:04:28.837Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+478,2019-07-09T10:04:28.847Z,4688,dc2016$,::1,,c:\windows\system32\windowspowershell\v1.0\powershell.exe,,,s-1-5-18
+479,2019-07-09T10:04:28.853Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
+480,2019-07-09T10:04:28.992Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+481,2019-07-09T10:04:29.104Z,4688,dc2016$,::1,,c:\windows\syswow64\windowspowershell\v1.0\powershell.exe,,,s-1-5-18
+482,2019-07-09T10:04:29.108Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
+483,2019-07-09T10:04:29.208Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+484,2019-07-09T10:05:17.428Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+485,2019-07-09T10:05:17.440Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+486,2019-07-09T10:05:17.440Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+487,2019-07-09T10:05:17.440Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+488,2019-07-09T10:05:17.440Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+489,2019-07-09T10:05:45.515Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+490,2019-07-09T10:05:45.588Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+491,2019-07-09T10:08:37.993Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-18
+492,2019-07-09T10:08:37.995Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+493,2019-07-09T10:08:51.357Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+494,2019-07-09T10:08:51.359Z,4768,administrator,::1,,,,,
+495,2019-07-09T10:08:51.359Z,4769,administrator,::1,,,,,
+496,2019-07-09T10:08:51.401Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+497,2019-07-09T10:08:51.439Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+498,2019-07-09T10:08:51.479Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+499,2019-07-09T10:09:08.130Z,4688,dc2016$,::1,,c:\windows\syswow64\cmd.exe,,,s-1-5-18
+500,2019-07-09T10:09:08.144Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
+501,2019-07-09T10:10:17.557Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+502,2019-07-09T10:10:17.568Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+503,2019-07-09T10:10:17.569Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+504,2019-07-09T10:10:17.569Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+505,2019-07-09T10:10:17.569Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+506,2019-07-09T10:11:26.258Z,4688,dc2016$,::1,,c:\temp\svchost\svchost.com,,,s-1-5-18
+507,2019-07-09T10:11:26.307Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+508,2019-07-09T10:11:40.831Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+509,2019-07-09T10:12:08.231Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+510,2019-07-09T10:14:51.303Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+511,2019-07-09T10:15:11.451Z,4688,dc2016$,::1,,c:\windows\system32\logonui.exe,,,s-1-5-18
+512,2019-07-09T10:15:12.623Z,4688,dc2016$,::1,,c:\windows\system32\rundll32.exe,,,s-1-5-18
+513,2019-07-09T10:15:12.657Z,4688,dc2016$,::1,,c:\windows\system32\rundll32.exe,,,s-1-5-18
+514,2019-07-09T10:15:17.687Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+515,2019-07-09T10:15:17.697Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+516,2019-07-09T10:15:17.697Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+517,2019-07-09T10:15:17.697Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+518,2019-07-09T10:15:12.983Z,4688,dc2016$,::1,,c:\windows\system32\smss.exe,,,s-1-5-18
+519,2019-07-09T10:15:17.697Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+520,2019-07-09T10:15:12.989Z,4688,dc2016$,::1,,c:\windows\system32\csrss.exe,,,s-1-5-18
+521,2019-07-09T10:15:12.998Z,4688,dc2016$,::1,,c:\windows\system32\winlogon.exe,,,s-1-5-18
+522,2019-07-09T10:15:13.085Z,4688,dc2016$,::1,,c:\windows\system32\logonui.exe,,,s-1-5-18
+523,2019-07-09T10:15:13.085Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+524,2019-07-09T10:15:13.147Z,4688,dc2016$,::1,,c:\windows\system32\dwm.exe,,,s-1-5-18
+525,2019-07-09T10:15:30.039Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+526,2019-07-09T10:15:30.041Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+527,2019-07-09T10:15:30.061Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+528,2019-07-09T10:16:05.630Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+529,2019-07-09T10:16:05.652Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+530,2019-07-09T10:16:19.133Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+531,2019-07-09T10:16:19.084Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+532,2019-07-09T10:16:19.093Z,4768,dcadmin,::1,,,,,
+533,2019-07-09T10:16:19.437Z,4688,dc2016$,::1,,c:\windows\system32\runtimebroker.exe,,,s-1-5-18
+534,2019-07-09T10:16:19.094Z,4769,dcadmin,::1,,,,,
+535,2019-07-09T10:16:19.133Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+536,2019-07-09T10:16:19.500Z,4688,dc2016$,::1,,c:\windows\system32\svchost.exe,,,s-1-5-18
+537,2019-07-09T10:16:19.238Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+538,2019-07-09T10:16:19.495Z,4688,dc2016$,::1,,c:\windows\system32\sihost.exe,,,s-1-5-18
+539,2019-07-09T10:16:19.557Z,4688,dc2016$,::1,,c:\windows\system32\xblgamesavetask.exe,,,s-1-5-18
+540,2019-07-09T10:16:19.550Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+541,2019-07-09T10:16:19.565Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+542,2019-07-09T10:16:19.565Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
+543,2019-07-09T10:16:19.712Z,4688,dc2016$,::1,,c:\windows\system32\userinit.exe,,,s-1-5-18
+544,2019-07-09T10:16:19.571Z,4688,dc2016$,::1,,c:\windows\system32\servermanagerlauncher.exe,,,s-1-5-18
+545,2019-07-09T10:16:19.900Z,4688,dc2016$,::1,,c:\windows\system32\slui.exe,,,s-1-5-20
+546,2019-07-09T10:16:19.724Z,4688,dcadmin,::1,,c:\windows\explorer.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+547,2019-07-09T10:16:20.101Z,4688,dcadmin,::1,,c:\windows\system32\licensingui.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+548,2019-07-09T10:16:20.278Z,4673,dcadmin,::1,,c:\windows\system32\svchost.exe,,,
+549,2019-07-09T10:16:19.954Z,4688,dc2016$,::1,,c:\windows\system32\slui.exe,,,s-1-5-18
+550,2019-07-09T10:16:20.279Z,4688,dc2016$,::1,,c:\windows\systemapps\shellexperiencehost_cw5n1h2txyewy\shellexperiencehost.exe,,,s-1-5-18
+551,2019-07-09T10:16:26.255Z,4673,dcadmin,::1,,c:\windows\system32\svchost.exe,,,
+552,2019-07-09T10:16:20.296Z,4688,dcadmin,::1,,c:\windows\system32\servermanager.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+553,2019-07-09T10:16:26.258Z,4688,dc2016$,::1,,c:\windows\system32\backgroundtaskhost.exe,,,s-1-5-18
+554,2019-07-09T10:16:20.407Z,4688,dc2016$,::1,,c:\windows\system32\consent.exe,,,s-1-5-18
+555,2019-07-09T10:16:20.425Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+556,2019-07-09T10:16:20.499Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+557,2019-07-09T10:16:20.532Z,4673,dcadmin,::1,,c:\windows\system32\svchost.exe,,,
+558,2019-07-09T10:16:31.010Z,4688,dcadmin,::1,,c:\program files\vmware\vmware tools\vmtoolsd.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+559,2019-07-09T10:16:20.532Z,4688,dc2016$,::1,,c:\windows\systemapps\microsoft.windows.cortana_cw5n1h2txyewy\searchui.exe,,,s-1-5-18
+560,2019-07-09T10:16:20.678Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+561,2019-07-09T10:16:20.761Z,4688,dc2016$,::1,,c:\windows\system32\servermanager.exe,,,s-1-5-18
+562,2019-07-09T10:16:22.298Z,4688,dc2016$,::1,,c:\windows\system32\wbem\wmiprvse.exe,,,s-1-5-18
+563,2019-07-09T10:16:22.363Z,4674,dcadmin,::1,,c:\windows\system32\servermanager.exe,\registry\machine\system\controlset001\services\winsock2\parameters,,
+564,2019-07-09T10:16:22.363Z,4674,dcadmin,::1,,c:\windows\system32\servermanager.exe,-,,
+565,2019-07-09T10:16:22.386Z,4674,dcadmin,::1,,c:\windows\system32\wbem\wmiprvse.exe,\registry\machine\software\microsoft\windows nt\currentversion\perflib,,
+566,2019-07-09T10:16:22.386Z,4674,dcadmin,::1,,c:\windows\system32\wbem\wmiprvse.exe,-,,
+567,2019-07-09T10:16:23.401Z,4674,dcadmin,::1,,c:\windows\system32\wbem\wmiprvse.exe,\registry\machine\software\microsoft\windows nt\currentversion\perflib,,
+568,2019-07-09T10:16:23.401Z,4674,dcadmin,::1,,c:\windows\system32\wbem\wmiprvse.exe,-,,
+569,2019-07-09T10:16:23.915Z,4688,dc2016$,::1,,c:\windows\system32\mobsync.exe,,,s-1-5-18
+570,2019-07-09T10:16:24.917Z,4688,dc2016$,::1,,c:\windows\system32\wbem\wmiprvse.exe,,,s-1-5-18
+571,2019-07-09T10:16:44.596Z,4688,dc2016$,::1,,c:\windows\system32\systemsettingsbroker.exe,,,s-1-5-18
+572,2019-07-09T10:16:45.799Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+573,2019-07-09T10:16:45.834Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+574,2019-07-09T10:16:59.216Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+575,2019-07-09T10:17:03.920Z,4673,dcadmin,::1,,c:\windows\explorer.exe,,,
+576,2019-07-09T10:17:05.513Z,4688,dcadmin,::1,,c:\windows\system32\cmd.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+577,2019-07-09T10:17:05.533Z,4688,dcadmin,::1,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+578,2019-07-09T10:17:13.066Z,4688,dcadmin,::1,,c:\windows\system32\ping.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+579,2019-07-09T10:17:20.080Z,4688,dc2016$,::1,,c:\windows\system32\dsregcmd.exe,,,s-1-5-18
+580,2019-07-09T10:17:19.872Z,4688,dc2016$,::1,,c:\windows\syswow64\dllhost.exe,,,s-1-5-18
+581,2019-07-09T10:17:20.107Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+582,2019-07-09T10:17:20.083Z,4688,dc2016$,::1,,c:\windows\system32\conhost.exe,,,s-1-5-18
+583,2019-07-09T10:18:19.560Z,4673,dcadmin,::1,,c:\windows\system32\svchost.exe,,,
+584,2019-07-09T10:18:19.561Z,4688,dc2016$,::1,,c:\windows\system32\backgroundtaskhost.exe,,,s-1-5-18
+585,2019-07-09T10:18:38.313Z,4688,dc2016$,::1,,c:\windows\system32\wermgr.exe,,,s-1-5-18
+586,2019-07-09T10:18:38.022Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+587,2019-07-09T10:20:17.874Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+588,2019-07-09T10:20:17.885Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+589,2019-07-09T10:20:17.885Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+590,2019-07-09T10:20:17.885Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+591,2019-07-09T10:20:17.885Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+592,2019-07-09T10:21:20.038Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+593,2019-07-09T10:21:21.792Z,4688,dc2016$,::1,,c:\windows\system32\svchost.exe,,,s-1-5-18
+594,2019-07-09T10:24:01.004Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+595,2019-07-09T10:24:01.001Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+596,2019-07-09T10:24:01.009Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+597,2019-07-09T10:24:01.257Z,5140,dcadmin,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-500
+598,2019-07-09T10:24:01.072Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+599,2019-07-09T10:24:01.390Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+600,2019-07-09T10:24:01.090Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+601,2019-07-09T10:24:01.094Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+602,2019-07-09T10:24:01.407Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+603,2019-07-09T10:24:01.100Z,4688,dc2016$,::1,,c:\windows\psexesvc.exe,,,s-1-5-18
+604,2019-07-09T10:24:01.266Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+605,2019-07-09T10:24:01.404Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+606,2019-07-09T10:24:01.407Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\cmd.exe,\device\condrv,,
+607,2019-07-09T10:24:15.514Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\hostname.exe,\registry\machine\system\controlset001\services\winsock2\parameters,,
+608,2019-07-09T10:24:15.507Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\hostname.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+609,2019-07-09T10:24:15.514Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\hostname.exe,-,,
+610,2019-07-09T10:24:19.080Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\whoami.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+611,2019-07-09T10:25:18.018Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+612,2019-07-09T10:25:18.019Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+613,2019-07-09T10:25:18.005Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+614,2019-07-09T10:25:18.018Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+615,2019-07-09T10:25:18.019Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+616,2019-07-09T10:26:40.834Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+617,2019-07-09T10:27:08.242Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+618,2019-07-09T10:27:16.613Z,4688,dc2016$,::1,,c:\windows\system32\logonui.exe,,,s-1-5-18
+619,2019-07-09T10:27:16.736Z,4688,dc2016$,::1,,c:\windows\system32\lockapphost.exe,,,s-1-5-18
+620,2019-07-09T10:27:17.716Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+621,2019-07-09T10:27:16.772Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+622,2019-07-09T10:27:17.744Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+623,2019-07-09T10:27:17.005Z,4673,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\svchost.exe,,,
+624,2019-07-09T10:28:21.045Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+625,2019-07-09T10:28:21.047Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+626,2019-07-09T10:28:21.054Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+627,2019-07-09T10:28:21.063Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+628,2019-07-09T10:28:38.021Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-18
+629,2019-07-09T10:28:38.025Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+630,2019-07-09T10:28:48.870Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+631,2019-07-09T10:28:48.860Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+632,2019-07-09T10:28:48.885Z,4688,dc2016$,::1,,c:\windows\psexesvc.exe,,,s-1-5-18
+633,2019-07-09T10:28:48.877Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+634,2019-07-09T10:28:48.981Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+635,2019-07-09T10:28:49.076Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+636,2019-07-09T10:28:49.090Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+637,2019-07-09T10:28:49.093Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+638,2019-07-09T10:28:49.093Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\cmd.exe,\device\condrv,,
+639,2019-07-09T10:28:48.972Z,5140,dcadmin,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-500
+640,2019-07-09T10:30:18.184Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+641,2019-07-09T10:30:18.185Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+642,2019-07-09T10:30:18.185Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+643,2019-07-09T10:30:18.185Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+644,2019-07-09T10:30:18.152Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+645,2019-07-09T10:38:38.050Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+646,2019-07-09T10:39:33.811Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+647,2019-07-09T10:39:33.812Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+648,2019-07-09T10:39:33.818Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+649,2019-07-09T10:39:33.825Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+650,2019-07-09T10:40:18.463Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+651,2019-07-09T10:40:18.463Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+652,2019-07-09T10:40:18.453Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+653,2019-07-09T10:40:18.463Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+654,2019-07-09T10:40:18.463Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+655,2019-07-09T10:41:40.863Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+656,2019-07-09T10:42:08.269Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+657,2019-07-09T10:45:18.599Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+658,2019-07-09T10:45:18.599Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+659,2019-07-09T10:45:18.599Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+660,2019-07-09T10:45:18.599Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+661,2019-07-09T10:45:18.580Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+662,2019-07-09T10:46:20.051Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+663,2019-07-09T10:46:20.083Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+664,2019-07-09T10:47:01.857Z,4688,dc2016$,::1,,c:\windows\psexesvc.exe,,,s-1-5-18
+665,2019-07-09T10:47:01.760Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+666,2019-07-09T10:47:01.767Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+667,2019-07-09T10:47:01.835Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+668,2019-07-09T10:47:01.845Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+669,2019-07-09T10:47:01.851Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+670,2019-07-09T10:47:01.952Z,5140,dcadmin,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-500
+671,2019-07-09T10:47:01.961Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+672,2019-07-09T10:47:02.141Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+673,2019-07-09T10:47:02.156Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+674,2019-07-09T10:47:02.159Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+675,2019-07-09T10:47:02.159Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\cmd.exe,\device\condrv,,
+676,2019-07-09T10:48:38.056Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+677,2019-07-09T10:50:18.138Z,5140,win10$,10.1.1.30,,,,\*\sysvol,s-1-5-21-388095587-3916525220-2479421359-3602
+678,2019-07-09T10:50:18.722Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+679,2019-07-09T10:50:18.733Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+680,2019-07-09T10:50:18.733Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+681,2019-07-09T10:50:18.733Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+682,2019-07-09T10:50:18.733Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+683,2019-07-09T10:55:18.860Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+684,2019-07-09T10:55:18.871Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+685,2019-07-09T10:55:18.871Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+686,2019-07-09T10:55:18.871Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+687,2019-07-09T10:55:18.872Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+688,2019-07-09T10:56:40.885Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+689,2019-07-09T10:57:01.472Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+690,2019-07-09T10:57:01.479Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+691,2019-07-09T10:57:01.487Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+692,2019-07-09T10:58:29.132Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+693,2019-07-09T10:58:38.067Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+694,2019-07-09T11:00:18.985Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+695,2019-07-09T11:00:18.995Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+696,2019-07-09T11:00:18.995Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+697,2019-07-09T11:00:18.995Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+698,2019-07-09T11:00:18.995Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+699,2019-07-09T11:03:06.941Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+700,2019-07-09T11:03:06.954Z,4688,dc2016$,::1,,c:\windows\psexesvc.exe,,,s-1-5-18
+701,2019-07-09T11:03:07.048Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+702,2019-07-09T11:03:07.199Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+703,2019-07-09T11:03:06.932Z,5140,dcadmin,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-500
+704,2019-07-09T11:03:06.950Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+705,2019-07-09T11:03:07.214Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+706,2019-07-09T11:03:07.217Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+707,2019-07-09T11:03:07.217Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\cmd.exe,\device\condrv,,
+708,2019-07-09T11:03:57.909Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+709,2019-07-09T11:03:57.910Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+710,2019-07-09T11:03:57.918Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+711,2019-07-09T11:03:57.929Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+712,2019-07-09T11:04:21.608Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+713,2019-07-09T11:04:21.615Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+714,2019-07-09T11:04:21.598Z,5140,dcadmin,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-500
+715,2019-07-09T11:04:21.788Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+716,2019-07-09T11:04:21.792Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\cmd.exe,\device\condrv,,
+717,2019-07-09T11:04:21.618Z,4688,dc2016$,::1,,c:\windows\psexesvc.exe,,,s-1-5-18
+718,2019-07-09T11:04:21.673Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+719,2019-07-09T11:04:21.772Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+720,2019-07-09T11:04:21.792Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+721,2019-07-09T11:05:19.136Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+722,2019-07-09T11:05:19.136Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+723,2019-07-09T11:05:19.127Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+724,2019-07-09T11:05:19.136Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+725,2019-07-09T11:05:19.136Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+726,2019-07-09T11:06:04.433Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+727,2019-07-09T11:06:04.429Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+728,2019-07-09T11:06:04.442Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+729,2019-07-09T11:06:05.852Z,5140,dcadmin,10.1.1.30,,,,\*\c$,s-1-5-21-388095587-3916525220-2479421359-500
+730,2019-07-09T11:06:04.464Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+731,2019-07-09T11:07:21.234Z,5140,dcadmin,10.1.1.30,,,,\*\c$,s-1-5-21-388095587-3916525220-2479421359-500
+732,2019-07-09T11:08:38.082Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-18
+733,2019-07-09T11:08:38.085Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+734,2019-07-09T11:08:59.982Z,4768,win10$,::ffff:10.1.1.30,,,,,
+735,2019-07-09T11:09:00.003Z,4769,win10$,::ffff:10.1.1.30,,,,,
+736,2019-07-09T11:09:00.010Z,4769,win10$,::ffff:10.1.1.30,,,,,
+737,2019-07-09T11:09:00.034Z,4769,win10$,::ffff:10.1.1.30,,,,,
+738,2019-07-09T11:09:00.384Z,4768,win10$,::ffff:10.1.1.30,,,,,
+739,2019-07-09T11:09:00.620Z,4769,win10$,::ffff:10.1.1.30,,,,,
+740,2019-07-09T11:09:00.015Z,5140,win10$,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-3602
+741,2019-07-09T11:09:00.020Z,4768,win10$,::ffff:10.1.1.30,,,,,
+742,2019-07-09T11:09:00.867Z,4769,win10$,::ffff:10.1.1.30,,,,,
+743,2019-07-09T11:09:00.033Z,4769,win10$,::ffff:10.1.1.30,,,,,
+744,2019-07-09T11:09:00.167Z,4769,win10$,::ffff:10.1.1.30,,,,,
+745,2019-07-09T11:09:00.392Z,4769,win10$,::ffff:10.1.1.30,,,,,
+746,2019-07-09T11:09:07.053Z,4769,win10$,::ffff:10.1.1.30,,,,,
+747,2019-07-09T11:09:00.862Z,4769,win10$,::ffff:10.1.1.30,,,,,
+748,2019-07-09T11:09:10.551Z,4768,win10$,::ffff:10.1.1.30,,,,,
+749,2019-07-09T11:09:10.555Z,4769,win10$,::ffff:10.1.1.30,,,,,
+750,2019-07-09T11:09:00.874Z,5140,win10$,10.1.1.30,,,,\*\sysvol,s-1-5-21-388095587-3916525220-2479421359-3602
+751,2019-07-09T11:10:19.269Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+752,2019-07-09T11:10:19.269Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+753,2019-07-09T11:10:19.258Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+754,2019-07-09T11:10:19.269Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+755,2019-07-09T11:10:19.269Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+756,2019-07-09T11:11:40.908Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\ipc$,s-1-5-20
+757,2019-07-09T11:13:30.312Z,4768,dcadmin,::1,,,,,
+758,2019-07-09T11:13:29.826Z,4688,dc2016$,::1,,c:\windows\syswow64\whoami.exe,,,s-1-5-18
+759,2019-07-09T11:13:30.396Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+760,2019-07-09T11:13:29.906Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+761,2019-07-09T11:13:30.295Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+762,2019-07-09T11:13:30.303Z,4768,dcadmin,::1,,,,,
+763,2019-07-09T11:13:30.304Z,4769,dcadmin,::1,,,,,
+764,2019-07-09T11:13:30.379Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+765,2019-07-09T11:13:36.931Z,4688,dcadmin,::1,,c:\windows\system32\mmc.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+766,2019-07-09T11:13:30.403Z,4688,dc2016$,::1,,c:\windows\system32\taskhostw.exe,,,s-1-5-18
+767,2019-07-09T11:13:37.042Z,4688,dc2016$,::1,,c:\windows\system32\consent.exe,,,s-1-5-18
+768,2019-07-09T11:13:37.055Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+769,2019-07-09T11:13:37.120Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+770,2019-07-09T11:13:37.149Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+771,2019-07-09T11:13:37.156Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+772,2019-07-09T11:13:37.180Z,4688,dc2016$,::1,,c:\windows\system32\mmc.exe,,,s-1-5-18
+773,2019-07-09T11:13:42.049Z,4688,dcadmin,::1,,c:\windows\system32\cmd.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+774,2019-07-09T11:13:42.063Z,4688,dcadmin,::1,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+775,2019-07-09T11:14:24.856Z,4688,dcadmin,::1,,c:\windows\system32\whoami.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+776,2019-07-09T11:14:29.699Z,4688,dcadmin,::1,,c:\windows\system32\whoami.exe,,,s-1-5-21-388095587-3916525220-2479421359-3183
+777,2019-07-09T11:15:19.385Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+778,2019-07-09T11:15:19.395Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+779,2019-07-09T11:15:19.395Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+780,2019-07-09T11:15:19.395Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+781,2019-07-09T11:15:19.395Z,4674,local service,,,c:\windows\system32\lsass.exe,-,,
+782,2019-07-09T11:18:34.429Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+783,2019-07-09T11:18:34.425Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+784,2019-07-09T11:18:34.438Z,5140,dcadmin,10.1.1.30,,,,\*\admin$,s-1-5-21-388095587-3916525220-2479421359-500
+785,2019-07-09T11:18:38.106Z,5140,dc2016$,fe80::3531:95a5:3a80:6a3d,,,,\*\sysvol,s-1-5-18
+786,2019-07-09T11:18:34.502Z,4769,dcadmin,::ffff:10.1.1.30,,,,,
+787,2019-07-09T11:18:34.515Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+788,2019-07-09T11:18:34.523Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+789,2019-07-09T11:18:34.528Z,4688,dc2016$,::1,,c:\windows\psexesvc.exe,,,s-1-5-18
+790,2019-07-09T11:18:34.581Z,5140,dcadmin,10.1.1.30,,,,\*\ipc$,s-1-5-21-388095587-3916525220-2479421359-500
+791,2019-07-09T11:18:34.591Z,4673,dc2016$,::1,,c:\windows\system32\lsass.exe,,,
+792,2019-07-09T11:18:34.701Z,4688,dc2016$,::1,,c:\windows\system32\dllhost.exe,,,s-1-5-18
+793,2019-07-09T11:18:34.717Z,4688,dc2016$,::1,,c:\windows\system32\cmd.exe,,,s-1-5-18
+794,2019-07-09T11:18:34.720Z,4688,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\conhost.exe,,,s-1-5-21-388095587-3916525220-2479421359-500
+795,2019-07-09T11:18:34.720Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\cmd.exe,\device\condrv,,
+796,2019-07-09T11:20:04.493Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,servicesactive,,
+797,2019-07-09T11:20:04.495Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
+798,2019-07-09T11:20:04.503Z,4674,dcadmin,::ffff:10.1.1.30,,c:\windows\system32\services.exe,psexesvc,,
