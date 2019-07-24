@@ -183,175 +183,195 @@ class SignatureDetector:
         return SignatureDetector.RESULT_NORMAL
 
 
-@staticmethod
-def isEternalRomace(inputLog):
-    time.sleep(1)
-    logs = None
-    # share name is 'IPC' and account is computer account
-    if (inputLog.get_sharedname().find(SignatureDetector.IPC) >= 0 and inputLog.get_accountname().endswith("$")):
-        # Check whether admin share with computer account is used within 2 seconds
-        logs = SignatureDetector.df[SignatureDetector.df.accountname.str.endswith("$")]
-        logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
-                    & ((SignatureDetector.df.sharename.str.endswith(SignatureDetector.ADMINSHARE)
-                        | SignatureDetector.df.sharename.str.endswith(SignatureDetector.ADMINSHARE_2)))]
-
-    if (inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE) >= 0 or inputLog.get_sharedname().find(
-            SignatureDetector.ADMINSHARE_2) >= 0):
-        # account name ends with '$'
-        if (inputLog.get_accountname().endswith("$")):
+    @staticmethod
+    def isEternalRomace(inputLog):
+        time.sleep(1)
+        logs = None
+        # share name is 'IPC' and account is computer account
+        if (inputLog.get_sharedname().find(SignatureDetector.IPC) >= 0 and inputLog.get_accountname().endswith("$")):
+            # Check whether admin share with computer account is used within 2 seconds
             logs = SignatureDetector.df[SignatureDetector.df.accountname.str.endswith("$")]
             logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
-                        & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
+                        & ((SignatureDetector.df.sharename.str.endswith(SignatureDetector.ADMINSHARE)
+                            | SignatureDetector.df.sharename.str.endswith(SignatureDetector.ADMINSHARE_2)))]
 
-    if ((logs is not None) and len(logs) > 0):
-        now = dateutil.parser.parse(inputLog.get_datetime())
-        now = timezone('UTC').localize(now)
-        last_date = dateutil.parser.parse(logs.tail(1).datetime.str.cat())
-        last_date = timezone('UTC').localize(last_date)
-        diff = (last_date - now).total_seconds()
-        if (diff < 2):
-            print("Signature E(EternalRomace): " + SignatureDetector.RESULT_ROMANCE)
-            return SignatureDetector.RESULT_ROMANCE
+        if (inputLog.get_sharedname().find(SignatureDetector.ADMINSHARE) >= 0 or inputLog.get_sharedname().find(
+                SignatureDetector.ADMINSHARE_2) >= 0):
+            # account name ends with '$'
+            if (inputLog.get_accountname().endswith("$")):
+                logs = SignatureDetector.df[SignatureDetector.df.accountname.str.endswith("$")]
+                logs = logs[(SignatureDetector.df.clientaddr == inputLog.get_clientaddr())
+                            & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
 
-    return SignatureDetector.RESULT_NORMAL
-
-
-@staticmethod
-def isEternalWin8(inputLog):
-    time.sleep(1)
-    logs = None
-    logs_login = None
-    logs_ntlm = None
-    logs_share = None
-
-    # share name is 'IPC'
-    if (inputLog.get_sharedname().find(SignatureDetector.IPC) >= 0):
-        # Check whether 4624 and 4776 events are recorded from the same account within 2 seconds
-        logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
         if ((logs is not None) and len(logs) > 0):
-            logs_login = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_LOGIN) &
-                              (SignatureDetector.df.clientaddr == inputLog.get_clientaddr())]
-            logs_ntlm = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_NTLM)]
-
-        if ((logs_login is not None) and len(logs_login) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
             now = dateutil.parser.parse(inputLog.get_datetime())
-            now = timezone('UTC').localize(now)
-            last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
-            last_date = timezone('UTC').localize(last_date)
-            diff_login = (last_date - now).total_seconds()
+            last_date=now
+            try:
+                now = timezone('UTC').localize(now)
+                last_date = dateutil.parser.parse(logs.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
+            except:
+                print("")
+            diff = (last_date - now).total_seconds()
+            if (diff < 2):
+                print("Signature E(EternalRomace): " + SignatureDetector.RESULT_ROMANCE)
+                return SignatureDetector.RESULT_ROMANCE
 
-            last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
-            last_date = timezone('UTC').localize(last_date)
-            diff_ntlm = (last_date - now).total_seconds()
+        return SignatureDetector.RESULT_NORMAL
 
-            if (diff_login < 2 and diff_ntlm < 2):
-                SignatureDetector.cnt = SignatureDetector.cnt + 1
-                if SignatureDetector.cnt >= 2:
-                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
 
-    # 4624
-    if (inputLog.get_eventid() == SignatureDetector.EVENT_LOGIN):
-        # Check whether 5140 and 4776 events are recorded from the same account within 2 seconds
-        logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
+    @staticmethod
+    def isEternalWin8(inputLog):
+        time.sleep(1)
+        logs = None
+        logs_login = None
+        logs_ntlm = None
+        logs_share = None
+
+        # share name is 'IPC'
+        if (inputLog.get_sharedname().find(SignatureDetector.IPC) >= 0):
+            # Check whether 4624 and 4776 events are recorded from the same account within 2 seconds
+            logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
+            if ((logs is not None) and len(logs) > 0):
+                logs_login = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_LOGIN) &
+                                  (SignatureDetector.df.clientaddr == inputLog.get_clientaddr())]
+                logs_ntlm = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_NTLM)]
+
+            if ((logs_login is not None) and len(logs_login) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
+                now = dateutil.parser.parse(inputLog.get_datetime())
+                last_date=now
+                try:
+                    now = timezone('UTC').localize(now)
+                    last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
+                    last_date = timezone('UTC').localize(last_date)
+                    diff_login = (last_date - now).total_seconds()
+
+                    last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
+                    last_date = timezone('UTC').localize(last_date)
+                except:
+                    print("")
+                diff_ntlm = (last_date - now).total_seconds()
+
+                if (diff_login < 2 and diff_ntlm < 2):
+                    SignatureDetector.cnt = SignatureDetector.cnt + 1
+                    if SignatureDetector.cnt >= 2:
+                        print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
+                        return SignatureDetector.RESULT_ROMANCE
+
+        # 4624
+        if (inputLog.get_eventid() == SignatureDetector.EVENT_LOGIN):
+            # Check whether 5140 and 4776 events are recorded from the same account within 2 seconds
+            logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
+            if ((logs is not None) and len(logs) > 0):
+                logs_share = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_SHARE) &
+                                  (SignatureDetector.df.clientaddr == inputLog.get_clientaddr()) &
+                                  (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))
+                                  ]
+                logs_ntlm = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_NTLM)]
+
+            if ((logs_share is not None) and len(logs_share) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
+                now = dateutil.parser.parse(inputLog.get_datetime())
+                last_date=now
+                try:
+                    now = timezone('UTC').localize(now)
+                    last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
+                    last_date = timezone('UTC').localize(last_date)
+                    diff_share = (last_date - now).total_seconds()
+
+                    last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
+                    last_date = timezone('UTC').localize(last_date)
+                except:
+                    print('')
+                diff_ntlm = (last_date - now).total_seconds()
+
+                if (diff_share < 2 and diff_ntlm < 2):
+                    SignatureDetector.cnt = SignatureDetector.cnt + 1
+                    if SignatureDetector.cnt >= 2:
+                        print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
+                        return SignatureDetector.RESULT_ROMANCE
+
+        # 4776
+        if (inputLog.get_eventid() == SignatureDetector.EVENT_NTLM):
+            # Check whether 5140 and 4624 events are recorded from the same account within 2 seconds
+            logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
+            if ((logs is not None) and len(logs) > 0):
+                logs_share = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_SHARE) &
+                                  (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))
+                                  ]
+                logs_login = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_LOGIN)]
+
+            if ((logs_share is not None) and len(logs_share) > 0) and ((logs_login is not None) and (len(logs_login) > 0)):
+                now = dateutil.parser.parse(inputLog.get_datetime())
+                last_date=now
+                try:
+                    now = timezone('UTC').localize(now)
+                    last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
+                    last_date = timezone('UTC').localize(last_date)
+                    diff_share = (last_date - now).total_seconds()
+
+                    last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
+                    last_date = timezone('UTC').localize(last_date)
+                except:
+                    print()
+                diff_login = (last_date - now).total_seconds()
+
+                if (diff_share < 2 and diff_login < 2):
+                    SignatureDetector.cnt = SignatureDetector.cnt + 1
+                    if SignatureDetector.cnt >= 2:
+                        print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
+                        return SignatureDetector.RESULT_ROMANCE
+
+        return SignatureDetector.RESULT_NORMAL
+
+
+    @staticmethod
+    def isEternalBlue(inputLog):
+        time.sleep(1)
+        logs = None
+
+        # security id is system and (process name is cmd.exe or rundll32.exe)
+        if (inputLog.get_securityid() == SignatureDetector.SYSTEM and
+                (inputLog.get_processname().endswith(SignatureDetector.CMD)
+                 or inputLog.get_processname().endswith(SignatureDetector.RUNDLL))
+        ):
+            # Check whether ANONYMOUS IPC access is used within 2 seconds
+            logs = SignatureDetector.df[((SignatureDetector.df.securityid == SignatureDetector.ANONYMOUS) | (
+                        SignatureDetector.df.accountname == SignatureDetector.ANONYMOUS))
+                                        & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
+
+        # security id is ANONYMOUS and share name is IPC security id is system and (process name is cmd.exe or rundll32) is recorded  within 2 seconds
+        if ((
+                inputLog.get_securityid() == SignatureDetector.ANONYMOUS or inputLog.get_accountname() == SignatureDetector.ANONYMOUS)
+                and inputLog.get_sharedname().endswith(SignatureDetector.IPC)):
+            # Check whether
+            logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.SYSTEM)
+                                        & (
+                                            ((SignatureDetector.df.processname.str.endswith(SignatureDetector.CMD) |
+                                              (SignatureDetector.df.processname.str.endswith(SignatureDetector.RUNDLL))
+                                              ))
+                                        )]
+        # Check whether admin share is used
+        if (inputLog.get_eventid() == SignatureDetector.EVENT_SHARE and SignatureDetector.isAdminshare(
+                inputLog) == SignatureDetector.RESULT_ADMINSHARE):
+            logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.SYSTEM)
+                                        & (
+                                            ((SignatureDetector.df.processname.str.endswith(SignatureDetector.CMD) |
+                                              (SignatureDetector.df.processname.str.endswith(SignatureDetector.RUNDLL))
+                                              ))
+                                        )]
+
         if ((logs is not None) and len(logs) > 0):
-            logs_share = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_SHARE) &
-                              (SignatureDetector.df.clientaddr == inputLog.get_clientaddr()) &
-                              (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))
-                              ]
-            logs_ntlm = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_NTLM)]
-
-        if ((logs_share is not None) and len(logs_share) > 0) and ((logs_ntlm is not None) and (len(logs_ntlm) > 0)):
             now = dateutil.parser.parse(inputLog.get_datetime())
-            now = timezone('UTC').localize(now)
-            last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
-            last_date = timezone('UTC').localize(last_date)
-            diff_share = (last_date - now).total_seconds()
+            last_date =now
+            try:
+                now = timezone('UTC').localize(now)
+                last_date = dateutil.parser.parse(logs.tail(1).datetime.str.cat())
+                last_date = timezone('UTC').localize(last_date)
+            except:
+                print()
+            diff = (last_date - now).total_seconds()
+            if (diff <= 10):
+                print("Signature E(EternalBlue): " + SignatureDetector.RESULT_ROMANCE)
+                return SignatureDetector.RESULT_ROMANCE
 
-            last_date = dateutil.parser.parse(logs_ntlm.tail(1).datetime.str.cat())
-            last_date = timezone('UTC').localize(last_date)
-            diff_ntlm = (last_date - now).total_seconds()
-
-            if (diff_share < 2 and diff_ntlm < 2):
-                SignatureDetector.cnt = SignatureDetector.cnt + 1
-                if SignatureDetector.cnt >= 2:
-                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
-
-    # 4776
-    if (inputLog.get_eventid() == SignatureDetector.EVENT_NTLM):
-        # Check whether 5140 and 4624 events are recorded from the same account within 2 seconds
-        logs = SignatureDetector.df[SignatureDetector.df.accountname == inputLog.get_accountname()]
-        if ((logs is not None) and len(logs) > 0):
-            logs_share = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_SHARE) &
-                              (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))
-                              ]
-            logs_login = logs[(SignatureDetector.df.eventid == SignatureDetector.EVENT_LOGIN)]
-
-        if ((logs_share is not None) and len(logs_share) > 0) and ((logs_login is not None) and (len(logs_login) > 0)):
-            now = dateutil.parser.parse(inputLog.get_datetime())
-            now = timezone('UTC').localize(now)
-            last_date = dateutil.parser.parse(logs_share.tail(1).datetime.str.cat())
-            last_date = timezone('UTC').localize(last_date)
-            diff_share = (last_date - now).total_seconds()
-
-            last_date = dateutil.parser.parse(logs_login.tail(1).datetime.str.cat())
-            last_date = timezone('UTC').localize(last_date)
-            diff_login = (last_date - now).total_seconds()
-
-            if (diff_share < 2 and diff_login < 2):
-                SignatureDetector.cnt = SignatureDetector.cnt + 1
-                if SignatureDetector.cnt >= 2:
-                    print("Signature E(EternalWin8): " + SignatureDetector.RESULT_ROMANCE)
-                    return SignatureDetector.RESULT_ROMANCE
-
-    return SignatureDetector.RESULT_NORMAL
-
-
-@staticmethod
-def isEternalBlue(inputLog):
-    time.sleep(1)
-    logs = None
-
-    # security id is system and (process name is cmd.exe or rundll32.exe)
-    if (inputLog.get_securityid() == SignatureDetector.SYSTEM and
-            (inputLog.get_processname().endswith(SignatureDetector.CMD)
-             or inputLog.get_processname().endswith(SignatureDetector.RUNDLL))
-    ):
-        # Check whether ANONYMOUS IPC access is used within 2 seconds
-        logs = SignatureDetector.df[((SignatureDetector.df.securityid == SignatureDetector.ANONYMOUS) | (
-                    SignatureDetector.df.accountname == SignatureDetector.ANONYMOUS))
-                                    & (SignatureDetector.df.sharename.str.endswith(SignatureDetector.IPC))]
-
-    # security id is ANONYMOUS and share name is IPC security id is system and (process name is cmd.exe or rundll32) is recorded  within 2 seconds
-    if ((
-            inputLog.get_securityid() == SignatureDetector.ANONYMOUS or inputLog.get_accountname() == SignatureDetector.ANONYMOUS)
-            and inputLog.get_sharedname().endswith(SignatureDetector.IPC)):
-        # Check whether
-        logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.SYSTEM)
-                                    & (
-                                        ((SignatureDetector.df.processname.str.endswith(SignatureDetector.CMD) |
-                                          (SignatureDetector.df.processname.str.endswith(SignatureDetector.RUNDLL))
-                                          ))
-                                    )]
-    # Check whether admin share is used
-    if (inputLog.get_eventid() == SignatureDetector.EVENT_SHARE and SignatureDetector.isAdminshare(
-            inputLog) == SignatureDetector.RESULT_ADMINSHARE):
-        logs = SignatureDetector.df[(SignatureDetector.df.securityid == SignatureDetector.SYSTEM)
-                                    & (
-                                        ((SignatureDetector.df.processname.str.endswith(SignatureDetector.CMD) |
-                                          (SignatureDetector.df.processname.str.endswith(SignatureDetector.RUNDLL))
-                                          ))
-                                    )]
-
-    if ((logs is not None) and len(logs) > 0):
-        now = dateutil.parser.parse(inputLog.get_datetime())
-        now = timezone('UTC').localize(now)
-        last_date = dateutil.parser.parse(logs.tail(1).datetime.str.cat())
-        last_date = timezone('UTC').localize(last_date)
-        diff = (last_date - now).total_seconds()
-        if (diff <= 10):
-            print("Signature E(EternalBlue): " + SignatureDetector.RESULT_ROMANCE)
-            return SignatureDetector.RESULT_ROMANCE
-
-    return SignatureDetector.RESULT_NORMAL
+        return SignatureDetector.RESULT_NORMAL
