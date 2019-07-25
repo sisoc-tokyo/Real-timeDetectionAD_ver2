@@ -6,12 +6,9 @@ import mysql.connector
 import atexit
 
 try:
-    #conn = mysql.connector.connect(user='root', password='Passw0rd!', host='10.0.19.111', database='kerberos')
-    conn = mysql.connector.connect(user='root', host='localhost', password='Passw0rd!', database='kerberos')
-
     # Search old cipher from SQL.
     def checkticket(ip_src, cipher, msg_type, timestamp):
-        global conn
+        conn = mysql.connector.connect(user='root', host='localhost', password='Passw0rd!', database='kerberos')
         cur = conn.cursor(buffered=True)
         try:
             time.sleep(1)
@@ -36,7 +33,6 @@ try:
                 #Check TKT Expire
                 query = 'SELECT * FROM cipher_table WHERE timestamp BETWEEN %s AND %s AND ip_dst = INET_ATON(%s) AND error_code = 32;'
                 cur.execute(query, (timestamp, str(int(timestamp) + 1000), ip_src))
-                cur.close()
 
                 if cur.rowcount != 0:
                     print('TKT Expired at ' + str(timestamp))
@@ -78,10 +74,11 @@ try:
                             break
         finally:
             cur.close()
+            conn.close()
 
     # Insert msg_type 11 or 13 data into SQL.
     def sqlinput_kereberos_msg(ip_src, ip_dst, cipher, msg_type, timestamp):
-        global conn
+        conn = mysql.connector.connect(user='root', host='localhost', password='Passw0rd!', database='kerberos')
         cur = conn.cursor(buffered=True)
         try:
             query = 'INSERT INTO cipher_table(ip_src, ip_dst, kerberos_cipher, msg_type, timestamp) VALUES (INET_ATON(%s), INET_ATON(%s), %s, %s, %s)'
@@ -89,9 +86,10 @@ try:
             conn.commit()
         finally:
             cur.close()
+            conn.close()
 
     def sqlinput_kereberos_err(ip_src, ip_dst, timestamp):
-        global conn
+        conn = mysql.connector.connect(user='root', host='localhost', password='Passw0rd!', database='kerberos')
         cur = conn.cursor(buffered=True)
         try:
             query = 'INSERT INTO cipher_table (ip_src, ip_dst, error_code, timestamp) VALUES (INET_ATON(%s), INET_ATON(%s), %s, %s)'
@@ -99,11 +97,12 @@ try:
             conn.commit()
         finally:
             cur.close()
+            conn.close()
 
 
     # Delete cipher before 11 hours.
     def delete_timer():
-        global conn
+        conn = mysql.connector.connect(user='root', host='localhost', password='Passw0rd!', database='kerberos')
         cur = conn.cursor(buffered=True)
         try:
 
@@ -119,7 +118,8 @@ try:
                 conn.commit()
         finally:
             cur.close()
-            
+            conn.close()
+
 
     delete_thread = threading.Thread(target=delete_timer)
     delete_thread.start()
@@ -185,17 +185,11 @@ try:
         else:
             return 'normal'
 
-    def all_done():
-        print("Closing the DB connection.....")
-        global conn
-        conn.close()
-
 except Exception as e:
     with open('parse_error.log', 'a') as f:
         print(e.args, file=f)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, threaded=True)
-    atexit.register(all_done)
 
 
