@@ -2,8 +2,11 @@ import time, threading, json
 from datetime import datetime, timezone
 from flask import Flask, request
 import update_es, send_alert
+import InputLog
 import mysql.connector
 import atexit
+from identify_attack import identify_attack
+from signature_detection import SignatureDetector
 
 try:
     # Search old cipher from SQL.
@@ -43,14 +46,16 @@ try:
                         if msg_type == 12:
                             f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
                             print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
-                            send_alert.Send_alert(result='Golden ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                            tactics = identify_attack.identify_tactics(SignatureDetector.RESULT_NOTGT, None)
+                            send_alert.Send_alert(SignatureDetector.RESULT_NOTGT+","+tactics, datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
                                                   clientaddr='-', servicename='-', processname='-', objectname='-',
                                                   sharedname='-')
 
                         if msg_type == 14:
                             print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
                             f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
-                            send_alert.Send_alert(result='Silver ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                            tactics = identify_attack.identify_tactics(SignatureDetector.RESULT_SILVER, None)
+                            send_alert.Send_alert(SignatureDetector.RESULT_SILVER+","+tactics, datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
                                                   clientaddr='-', servicename='-', processname='-', objectname='-',
                                                   sharedname='-')
 
@@ -191,5 +196,4 @@ except Exception as e:
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, threaded=True)
-
 

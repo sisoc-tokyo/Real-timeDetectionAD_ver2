@@ -8,6 +8,9 @@ class identify_attack:
 
     @staticmethod
     def identify_tactics(result, inputLog):
+        if (result == SignatureDetector.RESULT_NOTGT or result == SignatureDetector.RESULT_SILVER):
+            return identify_attack.TACTICS["TA0003"]
+
         if(result==SignatureDetector.RESULT_PRIV):
             return identify_attack.TACTICS["TA0004"]
 
