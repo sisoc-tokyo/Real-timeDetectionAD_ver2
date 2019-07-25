@@ -3,3 +3,6 @@
 "c:\windows\system32\ping.exe"
 "c:\windows\system32\sc.exe"
 "c:\tools\winlogbeat\winlogbeat.exe"
+"c:\tools\winlogbeat\schtasks.exe"
+"c:\tools\winlogbeat\rundll32.exe"
+"c:\sysmon\sysmon64.exe"
