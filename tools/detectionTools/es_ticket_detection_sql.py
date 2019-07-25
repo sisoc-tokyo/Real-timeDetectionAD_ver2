@@ -7,104 +7,119 @@ import atexit
 
 try:
     #conn = mysql.connector.connect(user='root', password='Passw0rd!', host='10.0.19.111', database='kerberos')
-    conn = mysql.connector.connect(user='root', host='localhost', database='kerberos')
-    cur = conn.cursor()
+    conn = mysql.connector.connect(user='root', host='localhost', password='Passw0rd!', database='kerberos')
 
     # Search old cipher from SQL.
     def checkticket(ip_src, cipher, msg_type, timestamp):
-        global cur
+        global conn
+        cur = conn.cursor(buffered=True)
+        try:
+            time.sleep(1)
 
-        time.sleep(1)
+            if msg_type == 12:
+                query = 'SELECT ip_src, kerberos_cipher, timestamp FROM cipher_table WHERE (msg_type = 11 OR msg_type = 13) AND ip_dst = INET_ATON(%s) AND kerberos_cipher = %s'
+                cur.execute(query, (ip_src, cipher))
+                curfet = cur.fetchall()
 
-        if msg_type == 12:
-            query = 'SELECT ip_src, kerberos_cipher, timestamp FROM cipher_table WHERE (msg_type = 11 OR msg_type = 13) AND ip_dst = INET_ATON(%s) AND kerberos_cipher = %s'
-            cur.execute(query, (ip_src, cipher))
-            curfet = cur.fetchall()
+            elif msg_type == 14:
+                query = 'SELECT ip_src, kerberos_cipher, timestamp FROM cipher_table WHERE msg_type = 13 AND ip_dst = INET_ATON(%s) AND kerberos_cipher = %s'
+                cur.execute(query, (ip_src, cipher))
+                curfet = cur.fetchall()
 
-        elif msg_type == 14:
-            query = 'SELECT ip_src, kerberos_cipher, timestamp FROM cipher_table WHERE msg_type = 13 AND ip_dst = INET_ATON(%s) AND kerberos_cipher = %s'
-            cur.execute(query, (ip_src, cipher))
-            curfet = cur.fetchall()
-
-        for res in curfet:
-            print(res[1])
-
-        if cur.rowcount != 0:
-            print('matched with old cipher at ' + str(timestamp))
-
-        else:
-            #Check TKT Expire
-            query = 'SELECT * FROM cipher_table WHERE timestamp BETWEEN %s AND %s AND ip_dst = INET_ATON(%s) AND error_code = 32;'
-            cur.execute(query, (timestamp, str(int(timestamp) + 1000), ip_src))
-            curfet = cur.fetchall()
+            for res in curfet:
+                print(res[1])
 
             if cur.rowcount != 0:
-                print('TKT Expired at ' + str(timestamp))
+                print('matched with old cipher at ' + str(timestamp))
 
             else:
-                with open('./detected_ticket.log', mode='a') as f:
-                    utctime = datetime.fromtimestamp(int(timestamp[:10]), timezone.utc)
+                #Check TKT Expire
+                query = 'SELECT * FROM cipher_table WHERE timestamp BETWEEN %s AND %s AND ip_dst = INET_ATON(%s) AND error_code = 32;'
+                cur.execute(query, (timestamp, str(int(timestamp) + 1000), ip_src))
+                cur.close()
+
+                if cur.rowcount != 0:
+                    print('TKT Expired at ' + str(timestamp))
+
+                else:
+                    with open('./detected_ticket.log', mode='a') as f:
+                        utctime = datetime.fromtimestamp(int(timestamp[:10]), timezone.utc)
+                        if msg_type == 12:
+                            f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
+                            print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
+                            send_alert.Send_alert(result='Golden ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                                                  clientaddr='-', servicename='-', processname='-', objectname='-',
+                                                  sharedname='-')
+
+                        if msg_type == 14:
+                            print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
+                            f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
+                            send_alert.Send_alert(result='Silver ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                                                  clientaddr='-', servicename='-', processname='-', objectname='-',
+                                                  sharedname='-')
+
                     if msg_type == 12:
-                        f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
-                        print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
-                        send_alert.Send_alert(result='Golden ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
-                                              clientaddr='-', servicename='-', processname='-', objectname='-',
-                                              sharedname='-')
+                        n = 0
+                        update_flag_event = True
+                        while update_flag_event:
+                            update_flag_event = update_es.update_event(ip_src)
+                            time.sleep(1)
+                            n += 1
+                            if n >= 2:
+                                break
 
-                    if msg_type == 14:
-                        print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
-                        f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
-                        send_alert.Send_alert(result='Silver ticket was used ', datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
-                                              clientaddr='-', servicename='-', processname='-', objectname='-',
-                                              sharedname='-')
-
-                if msg_type == 12:
                     n = 0
-                    update_flag_event = True
-                    while update_flag_event:
-                        update_flag_event = update_es.update_event(ip_src)
+                    update_flag_packet = True
+                    while update_flag_packet:
+                        update_flag_packet = update_es.update_packet(cipher)
                         time.sleep(1)
                         n += 1
                         if n >= 2:
                             break
-
-                n = 0
-                update_flag_packet = True
-                while update_flag_packet:
-                    update_flag_packet = update_es.update_packet(cipher)
-                    time.sleep(1)
-                    n += 1
-                    if n >= 2:
-                        break
+        finally:
+            cur.close()
 
     # Insert msg_type 11 or 13 data into SQL.
     def sqlinput_kereberos_msg(ip_src, ip_dst, cipher, msg_type, timestamp):
-        global cur, conn
-        query = 'INSERT INTO cipher_table(ip_src, ip_dst, kerberos_cipher, msg_type, timestamp) VALUES (INET_ATON(%s), INET_ATON(%s), %s, %s, %s)'
-        cur.execute(query, (ip_src, ip_dst, cipher, msg_type, timestamp))
-        conn.commit()
+        global conn
+        cur = conn.cursor(buffered=True)
+        try:
+            query = 'INSERT INTO cipher_table(ip_src, ip_dst, kerberos_cipher, msg_type, timestamp) VALUES (INET_ATON(%s), INET_ATON(%s), %s, %s, %s)'
+            cur.execute(query, (ip_src, ip_dst, cipher, msg_type, timestamp))
+            conn.commit()
+        finally:
+            cur.close()
 
     def sqlinput_kereberos_err(ip_src, ip_dst, timestamp):
-        global cur, conn
-        query = 'INSERT INTO cipher_table (ip_src, ip_dst, error_code, timestamp) VALUES (INET_ATON(%s), INET_ATON(%s), %s, %s)'
-        cur.execute(query, (ip_src, ip_dst, 32, timestamp))
-        conn.commit()
+        global conn
+        cur = conn.cursor(buffered=True)
+        try:
+            query = 'INSERT INTO cipher_table (ip_src, ip_dst, error_code, timestamp) VALUES (INET_ATON(%s), INET_ATON(%s), %s, %s)'
+            cur.execute(query, (ip_src, ip_dst, 32, timestamp))
+            conn.commit()
+        finally:
+            cur.close()
 
 
     # Delete cipher before 11 hours.
     def delete_timer():
-        global cur, conn
+        global conn
+        cur = conn.cursor(buffered=True)
+        try:
 
-        while True:
-            time.sleep(3600)
-            now = datetime.now()
-            now = float(now.timestamp() * 1000)
-            pasteleven = now - 39600000
-            print(now)
-            print(pasteleven)
-            deletequery = 'DELETE FROM cipher_table WHERE timestamp < %s'
-            cur.execute(deletequery, (pasteleven,))
-            conn.commit()
+            while True:
+                time.sleep(3600)
+                now = datetime.now()
+                now = float(now.timestamp() * 1000)
+                pasteleven = now - 39600000
+                print(now)
+                print(pasteleven)
+                deletequery = 'DELETE FROM cipher_table WHERE timestamp < %s'
+                cur.execute(deletequery, (pasteleven,))
+                conn.commit()
+        finally:
+            cur.close()
+            
 
     delete_thread = threading.Thread(target=delete_timer)
     delete_thread.start()
@@ -172,8 +187,7 @@ try:
 
     def all_done():
         print("Closing the DB connection.....")
-        global cur, conn
-        cur.close()
+        global conn
         conn.close()
 
 except Exception as e:
