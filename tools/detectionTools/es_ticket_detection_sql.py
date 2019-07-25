@@ -47,7 +47,7 @@ try:
                             f.write('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
                             print('Golden ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
                             tactics = identify_attack.identify_tactics(SignatureDetector.RESULT_NOTGT, None)
-                            send_alert.Send_alert(SignatureDetector.RESULT_NOTGT+","+tactics, datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                            send_alert.Send_alert(result=SignatureDetector.RESULT_NOTGT, attack=tactics, datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
                                                   clientaddr='-', servicename='-', processname='-', objectname='-',
                                                   sharedname='-')
 
@@ -55,7 +55,7 @@ try:
                             print('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime))
                             f.write('Silver ticket was used on ' + str(ip_src) + ' at ' + str(utctime) + ' ' + str(cipher) + '\n')
                             tactics = identify_attack.identify_tactics(SignatureDetector.RESULT_SILVER, None)
-                            send_alert.Send_alert(SignatureDetector.RESULT_SILVER+","+tactics, datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
+                            send_alert.Send_alert(result=SignatureDetector.RESULT_SILVER, attack=tactics, datetime=utctime, ip_src=ip_src, eventid='-', accountname='-',
                                                   clientaddr='-', servicename='-', processname='-', objectname='-',
                                                   sharedname='-')
 
