@@ -7,9 +7,9 @@ from email.utils import formatdate
 # TO_ADDRESS = 'change here'
 # BCC = ''
 # SUBJECT = 'change here'
-FROM_ADDRESS = 'coeutokyo@gmail.com'
-MY_PASSWORD = 'testPassw0rd!'
-TO_ADDRESS = 'coeutokyo@gmail.com'
+FROM_ADDRESS = 'change here'
+MY_PASSWORD = 'change here'
+TO_ADDRESS = 'change here'
 BCC = ''
 SUBJECT = 'Attack detected'
 
