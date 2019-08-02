@@ -18,7 +18,7 @@ class Send_alert:
     def create_message(self, from_addr, to_addr, bcc_addrs, subject, result, attack, datetime, ip_src, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname):
         body = 'Suspicious activity was detected.\n' + str(result) + '\nATT&CK: ' + str(attack) + '\nTime: ' + str(datetime) + '\nSource_IP_address: ' + str(ip_src) + '\nAccount: ' + str(accountname) + '\nIP address: ' + str(clientaddr) + '\nService name: ' + str(servicename) + '\nProcess name : ' + str(processname) + '\nObject name: ' + str(objectname) + '\nShared name: ' + str(sharedname)
         msg = MIMEText(body)
-        msg['Subject'] = subject
+        msg[‘Subject’] = subject + ' ' + result
         msg['From'] = from_addr
         msg['To'] = to_addr
         msg['Bcc'] = bcc_addrs
