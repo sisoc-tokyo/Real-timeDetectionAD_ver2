@@ -12,7 +12,7 @@ The tool detects the following attack activities using Event logs and Kerberos/S
 <img src="toolSummary.png" alt="Overview of the tool" title="Overview of the tool" width="50%" height="50%">
 
 The tool is tested in Windows 2008 R2, 2012 R2, 2016. 
-<a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/blob/master/Real-timeDetectionOfHigh-riskAttacksLeveragingKerberosAndSMB.pdf" target="_blank">Documentation of the tool is here</a>
+<a href="https://github.com/sisoc-tokyo/Real-timeDetectionAD_ver2/blob/master/Real-timeDetectionOfHigh-riskAttacksLeveragingKerberosAndSMB.pdf" download>Documentation of the tool is here</a>
 
 ## Tool detail
 ###	Function of the tool
