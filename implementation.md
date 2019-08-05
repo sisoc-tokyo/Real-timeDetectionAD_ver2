@@ -6,9 +6,11 @@
     * Files (programs)
         * rest_ocsvm_gt.py: REST API for Event Log analysis. It is called by Logstash for Event Logs.
         * signature_detection.py: Signature-based detection program using Event Logs. It is called by rest_ocsvm_gt.py.
-        * es_ticket_detection.py: REST API for packet analysis. It is called by Logstash for packet analysis.
+        * es_ticket_detection_sql.py: REST API for packet analysis. It is called by Logstash for packet analysis.
         * detect_golden.py: a program for re-analysing the result of Event Log analysis.
         * send_alert.py: Program for sending alert mail. It is called by rest_ocsvm_gt.py.
+        * identify_attack.py: Identify tactics of ATT&CK.
+        * InputLog.py: data class for Event Logs.
         * machine_learning.py (optional): Machine learning detection program. It is called by rest_ocsvm_gt.py.
     * Files (data)
         * command.csv: A black list of commands which tend to be used for attacks

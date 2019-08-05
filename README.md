@@ -12,7 +12,7 @@ The tool detects the following attack activities using Event logs and Kerberos/S
 <img src="toolSummary.png" alt="Overview of the tool" title="Overview of the tool" width="50%" height="50%">
 
 The tool is tested in Windows 2008 R2, 2012 R2, 2016. 
-<a href="Real-timeDetectionOfHigh-riskAttacksLeveragingKerberosAndSMB-wp.pdf" target="_blank">Documentation of the tool is here</a>
+<a href="Real-timeDetectionOfHigh-riskAttacksLeveragingKerberosAndSMB.pdf" target="_blank">Documentation of the tool is here</a>
 
 ## Tool detail
 ###	Function of the tool
@@ -42,6 +42,7 @@ Send alert E-mail to the security administrator, and add a flag indicates attack
 * 4688: A new process was created
 * 4768: A Kerberos authentication ticket (TGT) was requested
 * 4769: A Kerberos service ticket was requested
+* 4776: The domain controller attempted to validate the credentials for an account
 * 5140: A network share object was accessed
 
 ###	Packet analysis
