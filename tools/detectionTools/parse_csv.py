@@ -9,7 +9,7 @@ import InputLog
 import pandas as pd
 
 RESULT_FILE='result.csv'
-DOMAIN_NAME='example2.local'
+DOMAIN_NAME='example2'
 MODE_ML='ml'
 MODE_WHITE='whitelist'
 TARGET_EVT=[SignatureDetector.EVENT_TGT,SignatureDetector.EVENT_ST,SignatureDetector.EVENT_PRIV,SignatureDetector.EVENT_PROCESS,
@@ -20,17 +20,27 @@ TARGET_EVT=[SignatureDetector.EVENT_TGT,SignatureDetector.EVENT_ST,SignatureDete
 # clf_4688 = joblib.load('ocsvm_gt_4688.pkl')
 # base_dummies_4688 = pd.read_csv('data_dummies_4688.csv')
 
-# SignatureDetector.df_admin = pd.read_csv("./admin.csv")
-# SignatureDetector.df_cmd = pd.read_csv("./command.csv")
-# SignatureDetector.df_cmd_white = pd.read_csv("./whitelist.csv")
+SignatureDetector.df_admin = pd.read_csv("./admin.csv")
+SignatureDetector.df_cmd = pd.read_csv("./command.csv")
+SignatureDetector.df_cmd_white = pd.read_csv("./whitelist.csv")
 
 mode=MODE_WHITE
 
-LOGFILE="err.log"
+logfile="err.log"
 file=None
 
 def preds(row,file):
     global logfile
+    datetime=''
+    eventid=''
+    accountname=''
+    clientaddr=''
+    servicename=''
+    processname=''
+    objectname=''
+    sharedname=''
+    result=''
+    file=''
     try:
         datetime = row[1]
         eventid = row[3]
@@ -45,49 +55,49 @@ def preds(row,file):
         securityid=""
         if (eventid in TARGET_EVT):
             if eventid == SignatureDetector.EVENT_NTLM:
-                item_account = [s for s in item if 'Logon Account' in s]
+                item_account = [s for s in item if 'ログオン アカウント' in s]
                 org_accountname = item_account[0].split(":")[1]
             else:
-                item_account = [s for s in item if 'Account Name' in s]
+                item_account = [s for s in item if 'アカウント名' in s]
                 org_accountname = item_account[0].split(":")[1]
             if eventid == SignatureDetector.EVENT_LOGIN:
                 org_accountname = item_account[1].split(":")[1]
 
             item_clientaddr=""
-            item_clientaddr = [s for s in item if 'Source Address' in s]
+            item_clientaddr = [s for s in item if '送信元アドレス' in s]
             if len(item_clientaddr) == 0:
-                item_clientaddr = [s for s in item if 'Client Address' in s]
+                item_clientaddr = [s for s in item if 'クライアント アドレス' in s]
             if len(item_clientaddr) == 0:
-                item_clientaddr = [s for s in item if 'Source Network Address' in s]
+                item_clientaddr = [s for s in item if 'ソース ネットワーク アドレス' in s]
             if len(item_clientaddr) == 0:
-                item_clientaddr = [s for s in item if 'Source Workstation' in s]
+                item_clientaddr = [s for s in item if 'ソース ワークステーション' in s]
             if(len(item_clientaddr)>=1):
-                clientaddr = item_clientaddr[0].split(":")[1]
+                clientaddr = item_clientaddr[0].split(":")[len(item_clientaddr[0].split(":"))-1]
 
             item_service=""
-            item_service = [s for s in item if 'Service Name' in s]
+            item_service = [s for s in item if 'サービス名' in s]
             if(len(item_service)>=2):
                 servicename = item_service[0].split(":")[1]
 
             item_process = ""
-            item_process = [s for s in item if 'Process Name' in s]
+            item_process = [s for s in item if 'プロセス名' in s]
             if (len(item_process) >= 2):
-                processname = item_process[0].split("New Process Name:")[1]
+                processname = item_process[0].split("新しいプロセス名:")[1]
             elif (len(item_process) >=1):
-                processname = item_process[0].split("Process Name:")[1]
+                processname = item_process[0].split("プロセス名:")[1]
 
             item_obj = ""
-            item_obj = [s for s in item if 'Object Name' in s]
+            item_obj = [s for s in item if 'オブジェクト名' in s]
             if (len(item_obj) >= 2):
                 objectname = item_obj[0].split(":")[1]
 
             item_id = ""
-            item_id = [s for s in item if 'Security ID' in s]
+            item_id = [s for s in item if 'セキュリティ ID' in s]
             if (len(item_id) >= 1):
                 securityid = item_id[0].split(":")[1]
 
             if (eventid==SignatureDetector.EVENT_SHARE):
-                item_sharedname = [s for s in item if 'Share Name' in s]
+                item_sharedname = [s for s in item if '共有名' in s]
                 sharedname = item_sharedname[0].split(":")[1]
 
         else:
@@ -147,9 +157,10 @@ def preds(row,file):
             print(msg)
             #send_alert.Send_alert(result, datetime, eventid, accountname, clientaddr, servicename, processname, objectname, sharedname)
 
-    except:
+    except Exception as e:
         file = open(logfile, 'a')
         file.write(msg)
+        file.write(e)
 
     with open(RESULT_FILE, 'a') as f:
         writer = csv.writer(f)
@@ -169,3 +180,5 @@ def read_csv(inputdir):
                 if row:
                     preds(row,file)
 
+
+read_csv(sys.argv[1])
