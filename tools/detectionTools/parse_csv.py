@@ -180,5 +180,7 @@ def read_csv(inputdir):
                 if row:
                     preds(row,file)
 
+if os.path.exists(RESULT_FILE):
+    os.remove(RESULT_FILE)
 
 read_csv(sys.argv[1])
